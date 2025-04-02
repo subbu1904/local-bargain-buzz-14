@@ -250,11 +250,13 @@ const AdminLogs = () => {
 
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <Input 
-            placeholder="Search logs..." 
-            className="w-64"
-            startIcon={<Search className="h-4 w-4" />}
-          />
+          <div className="relative w-64">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+            <Input 
+              placeholder="Search logs..." 
+              className="pl-8"
+            />
+          </div>
           <Button variant="ghost" size="sm">
             <Filter className="h-4 w-4 mr-2" />
             Filters
