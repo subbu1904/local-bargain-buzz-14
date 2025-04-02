@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // Provide fallback values for development
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ncirqbredempqlrzyhdp.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jaXJxYnJlZGVtcHFscnp5aGRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM1OTA2MTYsImV4cCI6MjA1OTE2NjYxNn0.gwYybAmjkA4n5pGWpxNM6ZifXCGovpyv_FYJQvpfmdo';
 
 // Check if we have the required values before creating the client
 if (!supabaseUrl || supabaseUrl === 'https://your-supabase-url.supabase.co') {
