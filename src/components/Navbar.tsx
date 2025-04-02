@@ -1,9 +1,18 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Bell, Menu, MessageCircle, Plus, User } from "lucide-react";
+import { Bell, Menu, MessageCircle, Plus, User, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
+  const { user, signOut } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b">
       <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -22,25 +31,66 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2">
-            <Button variant="outline" size="icon" className="rounded-full">
-              <Bell className="h-5 w-5" />
-              <span className="sr-only">Notifications</span>
-            </Button>
-            <Button variant="outline" size="icon" className="rounded-full">
-              <MessageCircle className="h-5 w-5" />
-              <span className="sr-only">Messages</span>
-            </Button>
-            <Button variant="outline" size="icon" className="rounded-full">
-              <User className="h-5 w-5" />
-              <span className="sr-only">Profile</span>
-            </Button>
-          </div>
-          
-          <Button className="bg-flipssi-green text-white hover:bg-green-500">
-            <Plus className="mr-2 h-4 w-4" />
-            Sell
-          </Button>
+          {user ? (
+            <>
+              <div className="hidden md:flex items-center gap-2">
+                <Button variant="outline" size="icon" className="rounded-full" asChild>
+                  <Link to="/dashboard/notifications">
+                    <Bell className="h-5 w-5" />
+                    <span className="sr-only">Notifications</span>
+                  </Link>
+                </Button>
+                <Button variant="outline" size="icon" className="rounded-full" asChild>
+                  <Link to="/dashboard/messages">
+                    <MessageCircle className="h-5 w-5" />
+                    <span className="sr-only">Messages</span>
+                  </Link>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon" className="rounded-full">
+                      <User className="h-5 w-5" />
+                      <span className="sr-only">Profile</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/profile">Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/listings">My Listings</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/favorites">Favorites</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => signOut()}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log Out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              
+              <Button className="bg-flipssi-green text-white hover:bg-green-500" asChild>
+                <Link to="/create-listing">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Sell
+                </Link>
+              </Button>
+            </>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button variant="outline" asChild>
+                <Link to="/signin">Sign In</Link>
+              </Button>
+              <Button className="bg-flipssi-purple text-white hover:bg-purple-700" asChild>
+                <Link to="/signup">Sign Up</Link>
+              </Button>
+            </div>
+          )}
           
           <Button variant="outline" size="icon" className="md:hidden">
             <Menu className="h-5 w-5" />
