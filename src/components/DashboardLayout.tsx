@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuBadge,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
@@ -23,6 +24,7 @@ interface MenuItemType {
   title: string;
   path: string;
   icon: LucideIcon;
+  badge?: number | string;
 }
 
 interface MenuGroupType {
@@ -86,6 +88,11 @@ const DashboardSidebar = ({ menuGroups, role }: DashboardSidebarProps) => {
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
+                    {item.badge && (
+                      <SidebarMenuBadge>
+                        {item.badge}
+                      </SidebarMenuBadge>
+                    )}
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
