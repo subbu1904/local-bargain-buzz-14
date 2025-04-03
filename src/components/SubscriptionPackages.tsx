@@ -17,6 +17,8 @@ interface SubscriptionPlan {
   buttonText: string;
   popular?: boolean;
   path: string;
+  currency?: string;
+  billingPeriod?: string;
 }
 
 const plans: SubscriptionPlan[] = [
@@ -33,6 +35,24 @@ const plans: SubscriptionPlan[] = [
     ],
     buttonText: "Start Free",
     path: "/dashboard",
+    currency: "$",
+    billingPeriod: "month",
+  },
+  {
+    name: "Starter",
+    price: 4.99,
+    description: "Perfect for new sellers",
+    features: [
+      { text: "Post up to 15 listings", included: true },
+      { text: "Improved listing visibility", included: true },
+      { text: "Email support", included: true },
+      { text: "Featured listings (1 per month)", included: true },
+      { text: "Priority search results", included: false },
+    ],
+    buttonText: "Go Starter",
+    path: "/dashboard/payments",
+    currency: "$",
+    billingPeriod: "month",
   },
   {
     name: "Premium",
@@ -48,6 +68,8 @@ const plans: SubscriptionPlan[] = [
     buttonText: "Upgrade Now",
     popular: true,
     path: "/dashboard/payments",
+    currency: "$",
+    billingPeriod: "month",
   },
   {
     name: "Pro",
@@ -62,8 +84,34 @@ const plans: SubscriptionPlan[] = [
     ],
     buttonText: "Go Pro",
     path: "/dashboard/payments",
+    currency: "$",
+    billingPeriod: "month",
+  },
+  {
+    name: "Business",
+    price: 499.99,
+    description: "Enterprise solutions for large sellers",
+    features: [
+      { text: "Unlimited listings with bulk upload", included: true },
+      { text: "Premium store profile", included: true },
+      { text: "Dedicated account manager", included: true },
+      { text: "Advanced analytics dashboard", included: true },
+      { text: "API access for integration", included: true },
+    ],
+    buttonText: "Contact Sales",
+    path: "/dashboard/payments",
+    currency: "$",
+    billingPeriod: "year",
   },
 ];
+
+// Option to display prices in different currencies
+const currencyOptions = {
+  "$": "$",
+  "₹": "₹",
+  "€": "€",
+  "£": "£",
+};
 
 const SubscriptionPackages = () => {
   return (
@@ -75,7 +123,7 @@ const SubscriptionPackages = () => {
             Select the perfect plan to boost your selling experience on flipssi.com
           </p>
         </div>
-        <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 max-w-7xl mx-auto">
           {plans.map((plan) => (
             <Card 
               key={plan.name} 
@@ -92,12 +140,19 @@ const SubscriptionPackages = () => {
                   </div>
                 </div>
               )}
+              {plan.billingPeriod === "year" && (
+                <div className="absolute top-0 left-0">
+                  <div className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-br-lg">
+                    Annual
+                  </div>
+                </div>
+              )}
               <CardHeader>
                 <CardTitle className="text-xl">{plan.name}</CardTitle>
                 <CardDescription>{plan.description}</CardDescription>
                 <div className="mt-4">
-                  <span className="text-3xl font-bold">${plan.price}</span>
-                  <span className="text-gray-500 ml-1">/month</span>
+                  <span className="text-3xl font-bold">{plan.currency || "$"}{plan.price}</span>
+                  <span className="text-gray-500 ml-1">/{plan.billingPeriod || "month"}</span>
                 </div>
               </CardHeader>
               <CardContent>
@@ -126,7 +181,9 @@ const SubscriptionPackages = () => {
                       ? "bg-flipssi-purple hover:bg-purple-700" 
                       : plan.name === "Free" 
                         ? "bg-flipssi-green hover:bg-green-600" 
-                        : ""
+                        : plan.name === "Business"
+                          ? "bg-blue-600 hover:bg-blue-700"
+                          : ""
                   }`}
                 >
                   <Link to={plan.path}>{plan.buttonText}</Link>

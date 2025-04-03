@@ -24,6 +24,25 @@ type PaymentGateway = {
   enabled: boolean;
 };
 
+interface CurrencyOption {
+  value: string;
+  label: string;
+  symbol: string;
+}
+
+const currencyOptions: CurrencyOption[] = [
+  { value: "INR", label: "Indian Rupee", symbol: "₹" },
+  { value: "USD", label: "US Dollar", symbol: "$" },
+  { value: "EUR", label: "Euro", symbol: "€" },
+  { value: "GBP", label: "British Pound", symbol: "£" },
+  { value: "AED", label: "UAE Dirham", symbol: "د.إ" },
+  { value: "SGD", label: "Singapore Dollar", symbol: "S$" },
+  { value: "CAD", label: "Canadian Dollar", symbol: "C$" },
+  { value: "AUD", label: "Australian Dollar", symbol: "A$" },
+  { value: "JPY", label: "Japanese Yen", symbol: "¥" },
+  { value: "SAR", label: "Saudi Riyal", symbol: "﷼" },
+];
+
 interface PaymentGatewayProps {
   customerInfo?: {
     name: string;
@@ -38,6 +57,9 @@ const PaymentGateway = ({ customerInfo }: PaymentGatewayProps) => {
     { id: "paytm", name: "Paytm", enabled: true },
     { id: "stripe", name: "Stripe", enabled: false },
     { id: "paypal", name: "PayPal", enabled: false },
+    { id: "razorpay", name: "Razorpay", enabled: false },
+    { id: "phonepe", name: "PhonePe", enabled: false },
+    { id: "googlepay", name: "Google Pay", enabled: false },
   ]);
   const [selectedGateway, setSelectedGateway] = useState("paytm");
   const [paytmConfig, setPaytmConfig] = useState({
@@ -98,8 +120,10 @@ const PaymentGateway = ({ customerInfo }: PaymentGatewayProps) => {
     console.log("Paytm config:", paytmConfig);
     console.log("Customer info:", customerInfo);
     
+    const currencySymbol = currencyOptions.find(c => c.value === values.currency)?.symbol || "₹";
+    
     if (selectedGateway === "paytm") {
-      initiatePaytmPayment(values.amount);
+      initiatePaytmPayment(values.amount, values.currency, currencySymbol);
     } else {
       toast({
         title: "Payment gateway not implemented",
@@ -108,21 +132,21 @@ const PaymentGateway = ({ customerInfo }: PaymentGatewayProps) => {
     }
   };
 
-  const initiatePaytmPayment = (amount: string) => {
+  const initiatePaytmPayment = (amount: string, currency: string, symbol: string) => {
     // In a real implementation, this would make an API call to your backend
     // The backend would generate a transaction token and return it
     // Then you would redirect to the Paytm payment page or show their checkout widget
 
     toast({
       title: "Processing payment",
-      description: `Initiating ₹${amount} payment via Paytm${sandboxMode ? " (Test Mode)" : ""}`,
+      description: `Initiating ${symbol}${amount} payment via Paytm${sandboxMode ? " (Test Mode)" : ""}`,
     });
 
     // Simulate a successful payment after a delay
     setTimeout(() => {
       toast({
         title: "Payment successful",
-        description: `Your payment of ₹${amount} was processed successfully.`,
+        description: `Your payment of ${symbol}${amount} was processed successfully.`,
       });
     }, 2000);
   };
@@ -144,7 +168,7 @@ const PaymentGateway = ({ customerInfo }: PaymentGatewayProps) => {
       <CardContent>
         <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Available Payment Gateways</h3>
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {paymentGateways.map((gateway) => (
               <div key={gateway.id} className="flex items-center justify-between py-2 border-b">
                 <div className="flex items-center">
@@ -247,10 +271,11 @@ const PaymentGateway = ({ customerInfo }: PaymentGatewayProps) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="INR">Indian Rupee (₹)</SelectItem>
-                        <SelectItem value="USD">US Dollar ($)</SelectItem>
-                        <SelectItem value="EUR">Euro (€)</SelectItem>
-                        <SelectItem value="GBP">British Pound (£)</SelectItem>
+                        {currencyOptions.map((currency) => (
+                          <SelectItem key={currency.value} value={currency.value}>
+                            {currency.symbol} - {currency.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
