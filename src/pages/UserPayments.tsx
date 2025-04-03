@@ -4,8 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, CreditCard, Clock, RefreshCw } from "lucide-react";
 import { userMenuGroups } from "@/data/userMenuData";
+import PaymentGateway from "@/components/PaymentGateway";
 
 const UserPayments = () => {
+  const userInfo = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "123-456-7890"
+  };
+
   return (
     <DashboardLayout menuGroups={userMenuGroups} role="user">
       <div className="space-y-6">
@@ -120,6 +127,11 @@ const UserPayments = () => {
               </Button>
             </CardContent>
           </Card>
+        </div>
+        
+        {/* Payment Gateway Integration */}
+        <div className="mt-6">
+          <PaymentGateway customerInfo={userInfo} />
         </div>
         
         <div className="mt-6">
