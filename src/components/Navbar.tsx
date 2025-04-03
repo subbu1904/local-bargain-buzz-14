@@ -14,7 +14,7 @@ const Navbar = () => {
   const { user, signOut } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b">
+    <header className="sticky top-0 z-50 w-full bg-white border-b shadow-sm">
       <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center">
@@ -74,10 +74,10 @@ const Navbar = () => {
                 </DropdownMenu>
               </div>
               
-              <Button className="bg-flipssi-green text-white hover:bg-green-500" asChild>
+              <Button className="bg-gradient-to-r from-flipssi-green to-green-500 text-white hover:from-green-500 hover:to-green-600 font-bold shadow-md" asChild>
                 <Link to="/create-listing">
                   <Plus className="mr-2 h-4 w-4" />
-                  Sell
+                  Post For Free
                 </Link>
               </Button>
             </>
@@ -88,6 +88,15 @@ const Navbar = () => {
               </Button>
               <Button className="bg-flipssi-purple text-white hover:bg-purple-700" asChild>
                 <Link to="/signup">Sign Up</Link>
+              </Button>
+              <Button className="bg-gradient-to-r from-flipssi-green to-green-500 text-white hover:from-green-500 hover:to-green-600 font-bold shadow-md relative" asChild>
+                <Link to="/create-listing">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Post For Free
+                  <span className="absolute -top-2 -right-2 bg-flipssi-purple text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                    FREE
+                  </span>
+                </Link>
               </Button>
             </div>
           )}

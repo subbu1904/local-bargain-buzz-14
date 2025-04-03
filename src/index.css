@@ -50,6 +50,11 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --flipssi-purple: 262 80% 75%;
+    --flipssi-dark-purple: 262 80% 65%;
+    --flipssi-green: 142 76% 46%;
+    --flipssi-dark-green: 142 76% 36%;
   }
 
   .dark {
@@ -101,10 +106,12 @@
   }
 }
 
+/* Custom gradients */
 .hero-gradient {
   background: linear-gradient(90deg, hsla(277, 75%, 84%, 1) 0%, hsla(297, 50%, 51%, 1) 100%);
 }
 
+/* Listing card animations */
 .listing-hover {
   transition: all 0.3s ease;
 }
@@ -112,4 +119,39 @@
 .listing-hover:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Button and UI animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Additional utility classes */
+.text-gradient {
+  @apply bg-gradient-to-r from-flipssi-purple to-purple-500 bg-clip-text text-transparent;
+}
+
+.bg-glass {
+  @apply backdrop-blur-sm bg-white/30 border border-white/20;
+}
+
+.shadow-colored {
+  box-shadow: 0 4px 14px -2px rgba(155, 135, 245, 0.3);
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

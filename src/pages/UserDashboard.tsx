@@ -1,66 +1,10 @@
 
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  LayoutDashboard, 
-  ShoppingBag, 
-  Heart, 
-  MessageCircle, 
-  User, 
-  CreditCard,
-  Bell
-} from "lucide-react";
 import ListingCard, { ListingProps } from "@/components/ListingCard";
+import { userMenuGroups } from "@/data/userMenuData";
 
 const UserDashboard = () => {
-  const menuGroups = [
-    {
-      title: "Account",
-      items: [
-        {
-          title: "Dashboard",
-          path: "/dashboard",
-          icon: LayoutDashboard,
-        },
-        {
-          title: "My Listings",
-          path: "/dashboard/listings",
-          icon: ShoppingBag,
-        },
-        {
-          title: "Favorites",
-          path: "/dashboard/favorites",
-          icon: Heart,
-        },
-        {
-          title: "Messages",
-          path: "/dashboard/messages",
-          icon: MessageCircle,
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      items: [
-        {
-          title: "Profile",
-          path: "/dashboard/profile",
-          icon: User,
-        },
-        {
-          title: "Payments",
-          path: "/dashboard/payments",
-          icon: CreditCard,
-        },
-        {
-          title: "Notifications",
-          path: "/dashboard/notifications",
-          icon: Bell,
-        },
-      ],
-    },
-  ];
-
   const myListings: ListingProps[] = [
     {
       id: "1",
@@ -84,7 +28,7 @@ const UserDashboard = () => {
   ];
 
   return (
-    <DashboardLayout menuGroups={menuGroups} role="user">
+    <DashboardLayout menuGroups={userMenuGroups} role="user">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">

@@ -1,72 +1,12 @@
 
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  LayoutDashboard, 
-  Users, 
-  ShoppingBag, 
-  Settings, 
-  BarChart4, 
-  AlertTriangle,
-  FileText
-} from "lucide-react";
+import { Users } from "lucide-react";
+import { adminMenuGroups } from "@/data/adminMenuData";
 
 const AdminDashboard = () => {
-  const menuGroups = [
-    {
-      title: "Main",
-      items: [
-        {
-          title: "Dashboard",
-          path: "/admin",
-          icon: LayoutDashboard,
-        },
-        {
-          title: "Users",
-          path: "/admin/users",
-          icon: Users,
-        },
-        {
-          title: "Listings",
-          path: "/admin/listings",
-          icon: ShoppingBag,
-        },
-      ],
-    },
-    {
-      title: "Analytics",
-      items: [
-        {
-          title: "Reports",
-          path: "/admin/reports",
-          icon: BarChart4,
-        },
-        {
-          title: "Activity",
-          path: "/admin/activity",
-          icon: AlertTriangle,
-        },
-      ],
-    },
-    {
-      title: "System",
-      items: [
-        {
-          title: "Settings",
-          path: "/admin/settings",
-          icon: Settings,
-        },
-        {
-          title: "Logs",
-          path: "/admin/logs",
-          icon: FileText,
-        },
-      ],
-    },
-  ];
-
   return (
-    <DashboardLayout menuGroups={menuGroups} role="admin">
+    <DashboardLayout menuGroups={adminMenuGroups} role="admin">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
