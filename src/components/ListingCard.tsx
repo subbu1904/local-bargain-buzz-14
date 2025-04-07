@@ -1,7 +1,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, MapPin } from "lucide-react";
+import { Heart, MapPin, Star } from "lucide-react";
 
 export interface ListingProps {
   id: string;
@@ -12,6 +12,8 @@ export interface ListingProps {
   distance: string;
   isNew?: boolean;
   category: string;
+  rating?: number; // Added rating property
+  description?: string; // Added description property
 }
 
 const ListingCard = ({
@@ -23,6 +25,7 @@ const ListingCard = ({
   distance,
   isNew,
   category,
+  rating,
 }: ListingProps) => {
   return (
     <Card className="overflow-hidden border listing-hover">
@@ -49,10 +52,16 @@ const ListingCard = ({
           <span className="truncate mr-1">{location}</span>
           <span className="text-xs text-gray-400">({distance})</span>
         </div>
-        <div className="mt-2">
+        <div className="mt-2 flex justify-between items-center">
           <Badge variant="outline" className="text-xs font-normal">
             {category}
           </Badge>
+          {rating !== undefined && (
+            <div className="flex items-center">
+              <Star className={`h-4 w-4 ${rating > 0 ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
+              <span className="ml-1 text-xs text-gray-600">{rating.toFixed(1)}</span>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
