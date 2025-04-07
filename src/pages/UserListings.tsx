@@ -26,12 +26,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Label } from "@/components/ui/label";
+import { userMenuGroups } from "@/data/userMenuData";
 
 const UserListings = () => {
   const { toast } = useToast();
   const [listingToDelete, setListingToDelete] = useState<string | null>(null);
-  const [showDialog, setShowDialog] = useState(false);
+  const [listingToEdit, setListingToEdit] = useState<ListingProps | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [editFormData, setEditFormData] = useState({
+    title: '',
+    price: 0,
+    category: '',
+    location: '',
+  });
+  
   const [listings, setListings] = useState<ListingProps[]>([
     {
       id: "1",
@@ -72,57 +83,20 @@ const UserListings = () => {
     },
   ]);
 
-  const menuGroups = [
-    {
-      title: "Account",
-      items: [
-        {
-          title: "Dashboard",
-          path: "/dashboard",
-          icon: LayoutDashboard,
-        },
-        {
-          title: "My Listings",
-          path: "/dashboard/listings",
-          icon: ShoppingBag,
-        },
-        {
-          title: "Favorites",
-          path: "/dashboard/favorites",
-          icon: Heart,
-        },
-        {
-          title: "Messages",
-          path: "/dashboard/messages",
-          icon: MessageCircle,
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      items: [
-        {
-          title: "Profile",
-          path: "/dashboard/profile",
-          icon: User,
-        },
-        {
-          title: "Payments",
-          path: "/dashboard/payments",
-          icon: CreditCard,
-        },
-        {
-          title: "Notifications",
-          path: "/dashboard/notifications",
-          icon: Bell,
-        },
-      ],
-    },
-  ];
-
   const handleDeleteListing = (id: string) => {
     setListingToDelete(id);
-    setShowDialog(true);
+    setShowDeleteDialog(true);
+  };
+
+  const handleEditListing = (listing: ListingProps) => {
+    setListingToEdit(listing);
+    setEditFormData({
+      title: listing.title,
+      price: listing.price,
+      category: listing.category,
+      location: listing.location,
+    });
+    setShowEditDialog(true);
   };
 
   const confirmDelete = () => {
@@ -132,8 +106,33 @@ const UserListings = () => {
         title: "Listing deleted",
         description: "Your listing has been successfully removed.",
       });
-      setShowDialog(false);
+      setShowDeleteDialog(false);
       setListingToDelete(null);
+    }
+  };
+
+  const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditFormData({
+      ...editFormData,
+      [name]: name === 'price' ? Number(value) : value,
+    });
+  };
+
+  const saveEditChanges = () => {
+    if (listingToEdit) {
+      const updatedListings = listings.map(listing => 
+        listing.id === listingToEdit.id 
+        ? { ...listing, ...editFormData } 
+        : listing
+      );
+      setListings(updatedListings);
+      toast({
+        title: "Listing updated",
+        description: "Your listing has been successfully updated.",
+      });
+      setShowEditDialog(false);
+      setListingToEdit(null);
     }
   };
 
@@ -143,7 +142,7 @@ const UserListings = () => {
   );
 
   return (
-    <DashboardLayout menuGroups={menuGroups} role="user">
+    <DashboardLayout menuGroups={userMenuGroups} role="user">
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold">My Listings</h1>
         <Button className="bg-flipssi-green text-white hover:bg-green-500" asChild>
@@ -179,7 +178,12 @@ const UserListings = () => {
             <div key={listing.id} className="relative">
               <ListingCard {...listing} />
               <div className="absolute top-2 right-2 flex gap-2">
-                <Button size="icon" variant="outline" className="bg-white h-8 w-8 rounded-full">
+                <Button 
+                  size="icon" 
+                  variant="outline" 
+                  className="bg-white h-8 w-8 rounded-full"
+                  onClick={() => handleEditListing(listing)}
+                >
                   <Edit3 className="h-4 w-4" />
                 </Button>
                 <Button 
@@ -196,14 +200,15 @@ const UserListings = () => {
         </div>
       )}
 
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+      {/* Delete Listing Dialog */}
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete Listing</DialogTitle>
           </DialogHeader>
           <p className="py-4">Are you sure you want to delete this listing? This action cannot be undone.</p>
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setShowDialog(false)}>
+            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
               Cancel
             </Button>
             <Button 
@@ -211,6 +216,74 @@ const UserListings = () => {
               onClick={confirmDelete}
             >
               Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Listing Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit Listing</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="title" className="text-right">
+                Title
+              </Label>
+              <Input
+                id="title"
+                name="title"
+                value={editFormData.title}
+                onChange={handleEditFormChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="price" className="text-right">
+                Price
+              </Label>
+              <Input
+                id="price"
+                name="price"
+                type="number"
+                value={editFormData.price}
+                onChange={handleEditFormChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="category" className="text-right">
+                Category
+              </Label>
+              <Input
+                id="category"
+                name="category"
+                value={editFormData.category}
+                onChange={handleEditFormChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="location" className="text-right">
+                Location
+              </Label>
+              <Input
+                id="location"
+                name="location"
+                value={editFormData.location}
+                onChange={handleEditFormChange}
+                className="col-span-3"
+              />
+            </div>
+          </div>
+          <div className="flex justify-end space-x-2">
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={saveEditChanges}>
+              Save changes
             </Button>
           </div>
         </DialogContent>

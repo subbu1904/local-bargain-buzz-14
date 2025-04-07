@@ -1,4 +1,3 @@
-
 import DashboardLayout from "@/components/DashboardLayout";
 import { useState } from "react";
 import { 
@@ -16,10 +15,12 @@ import {
   Eye,
   CheckCircle,
   XCircle,
-  FileEdit
+  FileEdit,
+  ChevronLeft
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { adminMenuGroups } from "@/data/adminMenuData";
 
 interface Listing {
   id: string;
@@ -326,9 +328,16 @@ const AdminListings = () => {
   const categories = Array.from(new Set(listings.map(listing => listing.category)));
 
   return (
-    <DashboardLayout menuGroups={menuGroups} role="admin">
+    <DashboardLayout menuGroups={adminMenuGroups} role="admin">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Listing Management</h1>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" asChild className="h-8 w-8 mr-2">
+            <Link to="/admin">
+              <ChevronLeft className="h-5 w-5" />
+            </Link>
+          </Button>
+          <h1 className="text-2xl font-bold">Listing Management</h1>
+        </div>
       </div>
       
       <div className="bg-white rounded-lg shadow mb-6">
