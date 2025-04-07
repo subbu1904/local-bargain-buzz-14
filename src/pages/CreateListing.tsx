@@ -18,6 +18,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { categories } from "@/data/categoryData";
+import LocationPicker from "@/components/LocationPicker";
 
 const CreateListing = () => {
   const navigate = useNavigate();
@@ -28,17 +30,46 @@ const CreateListing = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
   const [condition, setCondition] = useState("");
   const [location, setLocation] = useState("");
+  const [locationData, setLocationData] = useState<{
+    address: string;
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const [images, setImages] = useState<File[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+
+  // Get subcategories for the selected category
+  const selectedCategory = categories.find(cat => cat.id === category);
+  const subcategories = selectedCategory?.subcategories || [];
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const fileArray = Array.from(e.target.files);
       setImages(fileArray);
+      
+      // Create preview URLs for selected images
+      const newPreviewImages = fileArray.map(file => URL.createObjectURL(file));
+      setPreviewImages(prevPreviews => [...prevPreviews, ...newPreviewImages]);
     }
+  };
+
+  const handleLocationSelect = (data: {
+    address: string;
+    latitude: number;
+    longitude: number;
+  }) => {
+    setLocation(data.address);
+    setLocationData(data);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    setCategory(value);
+    setSubcategory(""); // Reset subcategory when category changes
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,6 +80,22 @@ const CreateListing = () => {
     try {
       // In a real app, you would upload the images to Supabase Storage
       // and then store the listing data in the database
+      
+      // Example listing data object
+      const listingData = {
+        title,
+        description,
+        price: parseFloat(price),
+        category,
+        subcategory,
+        condition,
+        location,
+        locationData,
+        userId: user?.id,
+        createdAt: new Date().toISOString(),
+      };
+      
+      console.log("Listing data to be saved:", listingData);
       
       // Simulate a database insert
       setTimeout(() => {
@@ -107,17 +154,42 @@ const CreateListing = () => {
               
               <div>
                 <Label htmlFor="category">Category</Label>
-                <Select value={category} onValueChange={setCategory} required>
+                <Select value={category} onValueChange={handleCategoryChange} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="electronics">Electronics</SelectItem>
-                    <SelectItem value="clothing">Clothing</SelectItem>
-                    <SelectItem value="furniture">Furniture</SelectItem>
-                    <SelectItem value="vehicles">Vehicles</SelectItem>
-                    <SelectItem value="toys">Toys & Games</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        <div className="flex items-center">
+                          <div className={`w-4 h-4 ${cat.color} rounded-full flex items-center justify-center mr-2`}>
+                            <cat.icon className="h-2 w-2" />
+                          </div>
+                          {cat.name}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label htmlFor="subcategory">Subcategory</Label>
+                <Select 
+                  value={subcategory} 
+                  onValueChange={setSubcategory} 
+                  disabled={!category || subcategories.length === 0}
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a subcategory" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subcategories.map((subcat) => (
+                      <SelectItem key={subcat.id} value={subcat.id}>
+                        {subcat.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -137,17 +209,11 @@ const CreateListing = () => {
                   </SelectContent>
                 </Select>
               </div>
-              
-              <div>
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  required
-                  placeholder="City, State"
-                />
-              </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="location">Location</Label>
+              <LocationPicker onLocationSelect={handleLocationSelect} />
             </div>
             
             <div>
@@ -203,9 +269,29 @@ const CreateListing = () => {
                   </p>
                 </div>
               </div>
-              {images.length > 0 && (
-                <div className="mt-2 text-sm text-gray-600">
-                  {images.length} {images.length === 1 ? "file" : "files"} selected
+              {previewImages.length > 0 && (
+                <div className="mt-4 grid grid-cols-3 gap-4">
+                  {previewImages.map((src, index) => (
+                    <div key={index} className="relative aspect-square">
+                      <img
+                        src={src}
+                        alt={`Preview ${index + 1}`}
+                        className="object-cover w-full h-full rounded-md"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-2 right-2 w-6 h-6 p-0"
+                        onClick={() => {
+                          setPreviewImages(previewImages.filter((_, i) => i !== index));
+                          setImages(images.filter((_, i) => i !== index));
+                        }}
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
