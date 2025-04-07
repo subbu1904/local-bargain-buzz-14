@@ -2,9 +2,10 @@
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, CreditCard, Clock, RefreshCw } from "lucide-react";
+import { Check, CreditCard, Clock, RefreshCw, ArrowLeft } from "lucide-react";
 import { userMenuGroups } from "@/data/userMenuData";
-import PaymentGateway from "@/components/PaymentGateway";
+import PaymentGatewayDatabase from "@/components/PaymentGatewayDatabase";
+import { Link } from "react-router-dom";
 
 const UserPayments = () => {
   const userInfo = {
@@ -16,7 +17,14 @@ const UserPayments = () => {
   return (
     <DashboardLayout menuGroups={userMenuGroups} role="user">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Subscription & Payments</h1>
+        <div className="flex items-center mb-2">
+          <Link to="/dashboard" className="mr-2">
+            <Button variant="ghost" size="icon">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+          </Link>
+          <h1 className="text-2xl font-bold">Subscription & Payments</h1>
+        </div>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="border-2 border-flipssi-purple">
@@ -131,7 +139,7 @@ const UserPayments = () => {
         
         {/* Payment Gateway Integration */}
         <div className="mt-6">
-          <PaymentGateway customerInfo={userInfo} />
+          <PaymentGatewayDatabase customerInfo={userInfo} />
         </div>
         
         <div className="mt-6">
