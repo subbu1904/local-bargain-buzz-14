@@ -1,4 +1,3 @@
-
 import { 
   LayoutDashboard, 
   Users, 
@@ -13,7 +12,8 @@ import {
   MessageSquare,
   HelpCircle,
   Search,
-  Plus
+  Plus,
+  Layers
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
@@ -54,6 +54,11 @@ export const adminMenuGroups: MenuGroup[] = [
         title: "Add Listing",
         path: "/admin/listings/create",
         icon: Plus
+      },
+      {
+        title: "CMS",
+        path: "/admin/cms",
+        icon: Layers
       }
     ],
   },
