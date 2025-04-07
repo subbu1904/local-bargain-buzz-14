@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { MapPin, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -10,21 +9,22 @@ interface LocationPickerProps {
   defaultAddress?: string;
 }
 
+interface LocationSuggestion {
+  place_name: string;
+  center: [number, number];
+}
+
 const LocationPicker = ({ onLocationSelect, defaultAddress = "" }: LocationPickerProps) => {
   const [address, setAddress] = useState(defaultAddress);
-  const [suggestions, setSuggestions] = useState<Array<{ place_name: string; center: [number, number] }>>([]);
+  const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // This would use a real geocoding API in production
   const fetchLocationSuggestions = async (query: string) => {
     setIsLoading(true);
     
-    // In a real app, you would call an API like Mapbox, Google, or OpenStreetMap
-    // For this example, we'll simulate an API response
     setTimeout(() => {
-      // Mock data for demonstration
-      const mockSuggestions = [
+      const mockSuggestions: LocationSuggestion[] = [
         {
           place_name: `${query}, New York, USA`,
           center: [-73.9808, 40.7648]
@@ -62,7 +62,7 @@ const LocationPicker = ({ onLocationSelect, defaultAddress = "" }: LocationPicke
     }
   }, [address]);
 
-  const handleSelectLocation = (suggestion: { place_name: string; center: [number, number] }) => {
+  const handleSelectLocation = (suggestion: LocationSuggestion) => {
     setAddress(suggestion.place_name);
     setSuggestions([]);
     setShowSuggestions(false);
@@ -82,8 +82,6 @@ const LocationPicker = ({ onLocationSelect, defaultAddress = "" }: LocationPicke
         (position) => {
           const { latitude, longitude } = position.coords;
           
-          // In a real app, you would use reverse geocoding to get the address
-          // For this example, we'll use a mock address
           const mockAddress = "Your Current Location";
           
           setAddress(mockAddress);
@@ -151,7 +149,6 @@ const LocationPicker = ({ onLocationSelect, defaultAddress = "" }: LocationPicke
         </p>
         <div className="h-48 bg-gray-100 rounded flex items-center justify-center">
           <p className="text-gray-400">Map preview will appear here</p>
-          {/* In a real app, you would display a map here using a mapping library */}
         </div>
       </div>
     </div>
