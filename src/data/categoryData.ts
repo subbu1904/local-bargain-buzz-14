@@ -1,5 +1,5 @@
 
-import { Tv, Sofa, Car, Shirt, Home, Gamepad, Smartphone, Baby, Bike } from "lucide-react";
+import { Tv, Sofa, Car, Shirt, Home, Gamepad, Smartphone, Baby, Bike, Book } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
 export interface Subcategory {
@@ -142,6 +142,21 @@ export const categories: Category[] = [
       { id: "sports-bicycles", name: "Bicycles", slug: "bicycles" },
       { id: "sports-team", name: "Team Sports", slug: "team-sports" },
       { id: "sports-water", name: "Water Sports", slug: "water-sports" },
+    ]
+  },
+  // New category - Books & Education
+  {
+    id: "books-education",
+    name: "Books & Education",
+    slug: "books-education",
+    icon: Book,
+    color: "bg-emerald-100 text-emerald-600",
+    subcategories: [
+      { id: "books-fiction", name: "Fiction", slug: "fiction" },
+      { id: "books-nonfiction", name: "Non-Fiction", slug: "non-fiction" },
+      { id: "books-textbooks", name: "Textbooks", slug: "textbooks" },
+      { id: "books-children", name: "Children's Books", slug: "children-books" },
+      { id: "books-courses", name: "Online Courses", slug: "online-courses" },
     ]
   },
 ];
