@@ -4,10 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  adminOnly?: boolean;
+  role: "user" | "admin";
 }
 
-const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children, role }: ProtectedRouteProps) => {
   const { user, isLoading } = useAuth();
   
   // Mock admin check - in a real app, you'd check a user role or permission in your database
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
     return <Navigate to="/signin" />;
   }
   
-  if (adminOnly && !isAdmin) {
+  if (role === "admin" && !isAdmin) {
     return <Navigate to="/dashboard" />;
   }
   

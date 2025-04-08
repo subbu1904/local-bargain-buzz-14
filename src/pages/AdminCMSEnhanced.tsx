@@ -16,7 +16,8 @@ import {
   Image,
   Globe,
   Tags,
-  Mail
+  Mail,
+  Plus
 } from "lucide-react";
 import CategoryManagerEnhanced from "@/components/admin/CategoryManagerEnhanced";
 import { Link } from "react-router-dom";
