@@ -13,9 +13,9 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow w-full">
         <HeroSection />
-        <div className="container mx-auto py-8 px-4">
+        <div className="container-full mx-auto py-8 px-4 md:px-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link to="/dashboard">
               <Button className="w-full sm:w-auto bg-flipssi-green text-white hover:bg-green-500">
@@ -38,10 +38,16 @@ const Index = () => {
           </div>
         </div>
         <CategorySection />
-        <FeaturedListings title="Featured Listings" />
+        <div className="container-full">
+          <FeaturedListings title="Featured Listings" />
+        </div>
         <PromoSection />
-        <SubscriptionPackages />
-        <FeaturedListings title="Recently Added" />
+        <div className="container-full">
+          <SubscriptionPackages />
+        </div>
+        <div className="container-full">
+          <FeaturedListings title="Recently Added" />
+        </div>
       </main>
       <Footer />
     </div>

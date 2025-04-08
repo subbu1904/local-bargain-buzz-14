@@ -103,7 +103,29 @@
 
   body {
     @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
   }
+}
+
+/* Fullwidth container */
+.container-full {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Container with reasonable max-width for content */
+.container-content {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /* Custom gradients */
@@ -148,10 +170,38 @@
   box-shadow: 0 4px 14px -2px rgba(155, 135, 245, 0.3);
 }
 
+/* Item detail page styles */
+.item-detail-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .item-detail-container {
+    grid-template-columns: 3fr 2fr;
+    padding: 2rem;
+  }
+}
+
+.item-gallery {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.item-info {
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+}
+
 /* Responsive tweaks */
 @media (max-width: 640px) {
   .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
