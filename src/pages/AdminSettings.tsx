@@ -9,7 +9,9 @@ import {
   Settings, 
   BarChart4, 
   AlertTriangle,
-  FileText
+  FileText,
+  UserPlus,
+  Key
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +21,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { supabase } from "@/lib/supabase";
 
 const AdminSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +32,16 @@ const AdminSettings = () => {
   const [debugMode, setDebugMode] = useState(false);
   const [allowRegistration, setAllowRegistration] = useState(true);
   const [emailVerification, setEmailVerification] = useState(true);
+  
+  // User management states
+  const [newUserEmail, setNewUserEmail] = useState("");
+  const [newUserPassword, setNewUserPassword] = useState("");
+  const [newUserRole, setNewUserRole] = useState("user");
+  const [users, setUsers] = useState([
+    { id: "1", email: "admin@flipssi.com", role: "admin", createdAt: "2025-01-15" },
+    { id: "2", email: "user1@example.com", role: "user", createdAt: "2025-01-20" },
+    { id: "3", email: "user2@example.com", role: "user", createdAt: "2025-02-05" }
+  ]);
 
   const menuGroups = [
     {
@@ -131,17 +147,244 @@ const AdminSettings = () => {
     }
   };
 
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!newUserEmail || !newUserPassword) {
+      toast({
+        variant: "destructive",
+        title: "Missing information",
+        description: "Please provide both email and password.",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      // In a real implementation, this would connect to Supabase
+      // For demonstration purposes, we're just updating the local state
+      const newUser = {
+        id: (users.length + 1).toString(),
+        email: newUserEmail,
+        role: newUserRole,
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+      
+      setUsers([...users, newUser]);
+      
+      toast({
+        title: "User created",
+        description: `${newUserEmail} has been added with ${newUserRole} role.`,
+      });
+      
+      // Clear form
+      setNewUserEmail("");
+      setNewUserPassword("");
+      setNewUserRole("user");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Failed to create user",
+        description: error.message || "An error occurred while creating the user.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleDeleteUser = (id: string) => {
+    // Show confirmation dialog
+    const confirm = window.confirm("Are you sure you want to delete this user?");
+    if (confirm) {
+      // Filter out the deleted user
+      setUsers(users.filter(user => user.id !== id));
+      
+      toast({
+        title: "User deleted",
+        description: "The user has been removed successfully.",
+      });
+    }
+  };
+
   return (
     <DashboardLayout menuGroups={menuGroups} role="admin">
       <Tabs defaultValue="general" className="space-y-4">
         <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="users">User Management</TabsTrigger>
           <TabsTrigger value="appearance">Appearance</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="email">Email</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
           <TabsTrigger value="advanced">Advanced</TabsTrigger>
         </TabsList>
+        
+        <TabsContent value="users" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>User Management</CardTitle>
+              <CardDescription>
+                Create and manage user accounts
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <form onSubmit={handleCreateUser} className="space-y-4 border-b pb-6">
+                  <h3 className="text-lg font-medium">Create New User</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="user-email">Email</Label>
+                      <Input 
+                        id="user-email" 
+                        type="email" 
+                        value={newUserEmail}
+                        onChange={(e) => setNewUserEmail(e.target.value)}
+                        placeholder="user@example.com" 
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="user-password">Password</Label>
+                      <Input 
+                        id="user-password" 
+                        type="password" 
+                        value={newUserPassword}
+                        onChange={(e) => setNewUserPassword(e.target.value)}
+                        placeholder="••••••••" 
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="user-role">Role</Label>
+                      <Select 
+                        value={newUserRole} 
+                        onValueChange={(value) => setNewUserRole(value)}
+                      >
+                        <SelectTrigger id="user-role">
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="user">Regular User</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <Button type="submit" className="mt-2" disabled={isLoading}>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    {isLoading ? "Creating..." : "Create User"}
+                  </Button>
+                </form>
+                
+                <div className="mt-6">
+                  <h3 className="text-lg font-medium mb-3">Existing Users</h3>
+                  <ScrollArea className="h-[300px]">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead>Created</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {users.map((user) => (
+                          <TableRow key={user.id}>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>
+                              <Badge variant={user.role === "admin" ? "default" : "outline"}>
+                                {user.role}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>{user.createdAt}</TableCell>
+                            <TableCell className="text-right">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteUser(user.id)}
+                                disabled={user.email === "admin@flipssi.com"} // Prevent deleting main admin
+                              >
+                                Delete
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                <Key className="h-4 w-4 mr-1" />
+                                Reset Password
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </ScrollArea>
+                  
+                  <div className="mt-4 text-sm text-muted-foreground">
+                    <p className="flex items-center">
+                      <Badge className="mr-2 bg-primary">admin</Badge>
+                      Admin users have full access to the admin dashboard and can manage all aspects of the system
+                    </p>
+                    <p className="flex items-center mt-2">
+                      <Badge className="mr-2 bg-gray-200 text-gray-800">user</Badge>
+                      Regular users can post listings, manage their account, and interact with the marketplace
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Authentication Settings</CardTitle>
+              <CardDescription>
+                Configure authentication options for your users
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="allow-signup">Allow Sign Up</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Enable or disable new user registrations
+                  </p>
+                </div>
+                <Switch
+                  id="allow-signup"
+                  checked={allowRegistration}
+                  onCheckedChange={setAllowRegistration}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="email-verification">Email Verification</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Require email verification for new accounts
+                  </p>
+                </div>
+                <Switch
+                  id="email-verification"
+                  checked={emailVerification}
+                  onCheckedChange={setEmailVerification}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="social-login">Social Login</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Allow users to sign in with social accounts
+                  </p>
+                </div>
+                <Switch
+                  id="social-login"
+                  checked={true}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
         
         <TabsContent value="general" className="space-y-4">
           <Card>
