@@ -41,6 +41,16 @@ const SignIn = () => {
     }
   };
 
+  const fillDemoCredentials = (type: 'user' | 'admin') => {
+    if (type === 'user') {
+      setEmail("demo@flipssi.com");
+      setPassword("demo123");
+    } else {
+      setEmail("admin@flipssi.com");
+      setPassword("admin123");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -109,6 +119,34 @@ const SignIn = () => {
             >
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
+            
+            <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+              <h3 className="text-sm font-medium text-gray-700 mb-2">Demo Accounts:</h3>
+              <div className="grid grid-cols-2 gap-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => fillDemoCredentials('user')}
+                  className="text-xs"
+                >
+                  Use Demo User
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => fillDemoCredentials('admin')}
+                  className="text-xs"
+                >
+                  Use Demo Admin
+                </Button>
+              </div>
+              <div className="mt-2 text-xs text-gray-500">
+                <div><span className="font-semibold">Regular User:</span> demo@flipssi.com / demo123</div>
+                <div><span className="font-semibold">Admin:</span> admin@flipssi.com / admin123</div>
+              </div>
+            </div>
             
             <div className="relative mt-6">
               <div className="absolute inset-0 flex items-center">
