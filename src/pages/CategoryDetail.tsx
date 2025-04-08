@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -29,7 +28,6 @@ import {
   PaginationPrevious 
 } from "@/components/ui/pagination";
 
-// Mock data for demonstration
 const mockListings = Array(16).fill(null).map((_, i) => ({
   id: `cat-${i + 1}`,
   title: `Item ${i + 1} in this Category`,
@@ -39,7 +37,7 @@ const mockListings = Array(16).fill(null).map((_, i) => ({
   distance: `${(Math.random() * 10).toFixed(1)} mi`,
   isNew: i % 5 === 0,
   category: "Electronics",
-  rating: i % 2 === 0 ? (Math.random() * 2 + 3).toFixed(1) : undefined
+  rating: i % 2 === 0 ? Number((Math.random() * 2 + 3).toFixed(1)) : undefined
 }));
 
 const CategoryDetail = () => {
@@ -48,7 +46,6 @@ const CategoryDetail = () => {
   const [filtersOpen, setFiltersOpen] = useState(true);
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   
-  // In a real app, you would fetch category details and listings based on these slugs
   const categoryName = categorySlug ? categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1).replace(/-/g, ' ') : "Category";
   const subcategoryName = subcategorySlug ? subcategorySlug.charAt(0).toUpperCase() + subcategorySlug.slice(1).replace(/-/g, ' ') : undefined;
   
@@ -101,7 +98,6 @@ const CategoryDetail = () => {
         </div>
         
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Mobile Filters Toggle */}
           <div className="lg:hidden w-full mb-4">
             <Button 
               variant="outline" 
@@ -116,7 +112,6 @@ const CategoryDetail = () => {
             </Button>
           </div>
           
-          {/* Filters Sidebar */}
           <div className={`${filtersOpen ? 'block' : 'hidden'} lg:block w-full lg:w-64 shrink-0`}>
             <Card>
               <CardContent className="p-4">
@@ -129,7 +124,6 @@ const CategoryDetail = () => {
                 
                 <Separator className="mb-4" />
                 
-                {/* Price Range Filter */}
                 <div className="mb-4">
                   <Collapsible defaultOpen={true}>
                     <CollapsibleTrigger className="flex items-center justify-between w-full text-left mb-2">
@@ -160,7 +154,6 @@ const CategoryDetail = () => {
                 
                 <Separator className="mb-4" />
                 
-                {/* Condition Filter */}
                 <div className="mb-4">
                   <Collapsible defaultOpen={true}>
                     <CollapsibleTrigger className="flex items-center justify-between w-full text-left mb-2">
@@ -192,7 +185,6 @@ const CategoryDetail = () => {
                 
                 <Separator className="mb-4" />
                 
-                {/* Distance Filter */}
                 <div className="mb-4">
                   <Collapsible defaultOpen={true}>
                     <CollapsibleTrigger className="flex items-center justify-between w-full text-left mb-2">
@@ -216,7 +208,6 @@ const CategoryDetail = () => {
                   </Collapsible>
                 </div>
                 
-                {/* More filters here */}
                 <Separator className="mb-4" />
                 
                 <Button className="w-full bg-flipssi-purple">Apply Filters</Button>
@@ -224,9 +215,7 @@ const CategoryDetail = () => {
             </Card>
           </div>
           
-          {/* Main Content */}
           <div className="flex-1">
-            {/* Sorting and View Options */}
             <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
               <div className="w-full sm:w-auto">
                 <Select defaultValue="newest">
@@ -264,7 +253,6 @@ const CategoryDetail = () => {
               </div>
             </div>
             
-            {/* Applied Filters Display */}
             <div className="flex flex-wrap gap-2 mb-4">
               {priceRange.min && priceRange.max && (
                 <div className="bg-muted rounded-full text-sm px-3 py-1 flex items-center">
@@ -281,7 +269,6 @@ const CategoryDetail = () => {
               )}
             </div>
             
-            {/* Listings Grid/List */}
             <div className={
               viewMode === 'grid' 
                 ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" 
@@ -292,7 +279,6 @@ const CategoryDetail = () => {
               ))}
             </div>
             
-            {/* Pagination */}
             <div className="mt-8 flex justify-center">
               <Pagination>
                 <PaginationContent>
