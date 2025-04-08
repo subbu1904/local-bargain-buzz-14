@@ -27,7 +27,7 @@ const Index = () => {
                 Admin Dashboard
               </Button>
             </Link>
-            <Link to="/create-listing" className="relative">
+            <Link to="/post-for-free" className="relative">
               <Button className="w-full sm:w-auto bg-gradient-to-r from-flipssi-purple to-purple-500 text-white hover:from-purple-600 hover:to-purple-700 font-bold shadow-lg transform transition-transform hover:scale-105">
                 Post For Free
               </Button>
