@@ -25,7 +25,12 @@ const SignIn = () => {
     
     try {
       await signIn(email, password);
-      navigate("/dashboard");
+      // Check if the user is admin and redirect accordingly
+      if (email === "admin@flipssi.com") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       setError(error.message || "Failed to sign in.");
     } finally {
