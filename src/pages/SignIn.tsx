@@ -85,7 +85,7 @@ const SignIn = () => {
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div className="text-left">
-                <Label htmlFor="email">Email address</Label>
+                <Label className="text-left">Email address</Label>
                 <Input
                   id="email"
                   type="email"
@@ -98,7 +98,7 @@ const SignIn = () => {
               
               <div className="text-left">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                  <Label className="text-left">Password</Label>
                   <Link
                     to="/forgot-password"
                     className="text-sm font-medium text-flipssi-purple hover:text-purple-500"
