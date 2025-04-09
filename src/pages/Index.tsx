@@ -5,6 +5,7 @@ import FeaturedListings from "@/components/FeaturedListings";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import PromoSection from "@/components/PromoSection";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -16,6 +17,7 @@ const Index = () => {
         <HeroSection />
         <CategorySection />
         <FeaturedListings title={t('featured_listings')} />
+        <PromoSection />
       </main>
       <Footer />
     </div>

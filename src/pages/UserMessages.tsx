@@ -1,45 +1,25 @@
 
 import DashboardLayout from "@/components/DashboardLayout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  LayoutDashboard, 
-  ShoppingBag, 
-  Heart, 
-  MessageCircle, 
-  User, 
-  CreditCard,
-  Bell,
   Search,
-  Send
+  Send,
+  UserPlus
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
-
-interface Message {
-  id: string;
-  content: string;
-  timestamp: Date;
-  sender: 'user' | 'other';
-}
-
-interface Conversation {
-  id: string;
-  with: {
-    name: string;
-    avatar?: string;
-  };
-  lastMessage: string;
-  timestamp: Date;
-  messages: Message[];
-  unread: boolean;
-}
+import { userMenuGroups } from "@/data/userMenuData";
+import MessageList from "@/components/messaging/MessageList";
+import Conversation from "@/components/messaging/Conversation";
+import { useToast } from "@/components/ui/use-toast";
+import { Message, ConversationType } from "@/types/messaging";
 
 const UserMessages = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [newMessage, setNewMessage] = useState('');
-  const [conversations, setConversations] = useState<Conversation[]>([
+  const [conversations, setConversations] = useState<ConversationType[]>([
     {
       id: "1",
       with: {
@@ -138,54 +118,7 @@ const UserMessages = () => {
     },
   ]);
   const [activeConversation, setActiveConversation] = useState<string | null>("1");
-
-  const menuGroups = [
-    {
-      title: "Account",
-      items: [
-        {
-          title: "Dashboard",
-          path: "/dashboard",
-          icon: LayoutDashboard,
-        },
-        {
-          title: "My Listings",
-          path: "/dashboard/listings",
-          icon: ShoppingBag,
-        },
-        {
-          title: "Favorites",
-          path: "/dashboard/favorites",
-          icon: Heart,
-        },
-        {
-          title: "Messages",
-          path: "/dashboard/messages",
-          icon: MessageCircle,
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      items: [
-        {
-          title: "Profile",
-          path: "/dashboard/profile",
-          icon: User,
-        },
-        {
-          title: "Payments",
-          path: "/dashboard/payments",
-          icon: CreditCard,
-        },
-        {
-          title: "Notifications",
-          path: "/dashboard/notifications",
-          icon: Bell,
-        },
-      ],
-    },
-  ];
+  const { toast } = useToast();
 
   const filteredConversations = conversations.filter(conversation => 
     conversation.with.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -217,6 +150,45 @@ const UserMessages = () => {
 
     setConversations(updatedConversations);
     setNewMessage('');
+    
+    // Simulate a reply after 2 seconds
+    setTimeout(() => {
+      const randomResponses = [
+        "Thanks for the message!",
+        "I'll get back to you soon.",
+        "That sounds great!",
+        "Perfect, looking forward to it.",
+        "Let me check and get back to you."
+      ];
+      
+      const autoReply = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+      
+      const updatedWithReply = updatedConversations.map(conv => {
+        if (conv.id === activeConversation) {
+          const replyMsg: Message = {
+            id: `m${Date.now() + 1}`,
+            content: autoReply,
+            timestamp: new Date(),
+            sender: 'other',
+          };
+          
+          return {
+            ...conv,
+            lastMessage: autoReply,
+            timestamp: new Date(),
+            messages: [...conv.messages, replyMsg],
+          };
+        }
+        return conv;
+      });
+      
+      setConversations(updatedWithReply);
+      
+      toast({
+        title: "New Message",
+        description: `${currentConversation?.with.name}: ${autoReply}`,
+      });
+    }, 2000);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -227,7 +199,7 @@ const UserMessages = () => {
   };
 
   return (
-    <DashboardLayout menuGroups={menuGroups} role="user">
+    <DashboardLayout menuGroups={userMenuGroups} role="user">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Messages</h1>
       </div>
@@ -248,122 +220,35 @@ const UserMessages = () => {
               </div>
             </div>
             
-            <div className="overflow-y-auto flex-grow">
-              {filteredConversations.length === 0 ? (
-                <div className="text-center py-10">
-                  <p className="text-gray-500">No conversations found.</p>
-                </div>
-              ) : (
-                <div className="divide-y">
-                  {filteredConversations.map((conversation) => (
-                    <div 
-                      key={conversation.id}
-                      className={`p-4 cursor-pointer hover:bg-gray-50 flex items-start ${
-                        activeConversation === conversation.id ? 'bg-gray-100' : ''
-                      } ${conversation.unread ? 'font-semibold' : ''}`}
-                      onClick={() => {
-                        setActiveConversation(conversation.id);
-                        // Mark as read when selected
-                        setConversations(
-                          conversations.map(c => 
-                            c.id === conversation.id ? { ...c, unread: false } : c
-                          )
-                        );
-                      }}
-                    >
-                      <Avatar className="h-10 w-10 mr-3">
-                        <AvatarImage src={conversation.with.avatar} />
-                        <AvatarFallback>
-                          {conversation.with.name.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-grow min-w-0">
-                        <div className="flex justify-between">
-                          <span className="font-medium truncate">{conversation.with.name}</span>
-                          <span className="text-xs text-gray-500">
-                            {format(conversation.timestamp, 'MMM d')}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 truncate">{conversation.lastMessage}</p>
-                      </div>
-                      {conversation.unread && (
-                        <div className="ml-2 h-2 w-2 bg-flipssi-purple rounded-full"></div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <MessageList 
+              conversations={filteredConversations}
+              activeConversation={activeConversation}
+              onSelectConversation={(id) => {
+                setActiveConversation(id);
+                // Mark as read when selected
+                setConversations(
+                  conversations.map(c => 
+                    c.id === id ? { ...c, unread: false } : c
+                  )
+                );
+              }}
+            />
           </div>
           
           {/* Right side - message content */}
-          <div className="w-2/3 flex flex-col h-full">
-            {activeConversation && currentConversation ? (
-              <>
-                <div className="p-4 border-b flex items-center">
-                  <Avatar className="h-10 w-10 mr-3">
-                    <AvatarImage src={currentConversation.with.avatar} />
-                    <AvatarFallback>
-                      {currentConversation.with.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-medium">{currentConversation.with.name}</h3>
-                  </div>
-                </div>
-                
-                <div className="flex-grow overflow-y-auto p-4">
-                  {currentConversation.messages.map((message) => (
-                    <div 
-                      key={message.id}
-                      className={`mb-4 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div 
-                        className={`rounded-lg px-4 py-2 max-w-[75%] ${
-                          message.sender === 'user' 
-                            ? 'bg-flipssi-purple text-white'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}
-                      >
-                        <p>{message.content}</p>
-                        <div 
-                          className={`text-xs mt-1 ${
-                            message.sender === 'user' ? 'text-purple-100' : 'text-gray-500'
-                          }`}
-                        >
-                          {format(message.timestamp, 'h:mm a')}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="p-4 border-t">
-                  <div className="flex items-center">
-                    <Input
-                      placeholder="Type a message..."
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      className="flex-grow"
-                    />
-                    <Button 
-                      size="icon"
-                      className="ml-2 bg-flipssi-purple text-white hover:bg-purple-700"
-                      onClick={handleSendMessage}
-                      disabled={!newMessage.trim()}
-                    >
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="flex items-center justify-center h-full text-gray-500">
-                Select a conversation to start messaging
-              </div>
-            )}
-          </div>
+          {activeConversation && currentConversation ? (
+            <Conversation
+              conversation={currentConversation}
+              newMessage={newMessage}
+              onNewMessageChange={setNewMessage}
+              onSendMessage={handleSendMessage}
+              onKeyDown={handleKeyDown}
+            />
+          ) : (
+            <div className="w-2/3 flex items-center justify-center h-full text-gray-500">
+              Select a conversation to start messaging
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>

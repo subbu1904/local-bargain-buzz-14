@@ -23,7 +23,7 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="hero-gradient text-white py-20 md:py-28">
+    <div className="bg-[#006A4E] text-white py-20 md:py-28">
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">

@@ -120,7 +120,7 @@
 
 /* Custom Styles */
 .hero-gradient {
-  background: linear-gradient(135deg, #7e22ce 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #006A4E 0%, #004e39 100%);
 }
 
 .listing-hover {
@@ -139,6 +139,7 @@
   --flipssi-green: #22c55e;
   --flipssi-dark-green: #16a34a;
   --flipssi-soft-gray: #f9fafb;
+  --flipssi-bottle-green: #006A4E;
 }
 
 /* Voice search animation */
