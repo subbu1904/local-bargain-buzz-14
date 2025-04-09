@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold bg-gradient-to-r from-flipssi-purple to-purple-500 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-gradient-to-r from-[#006a5a] to-[#80ffeb] bg-clip-text text-transparent">
               flipssi.com
             </span>
           </Link>
@@ -41,13 +41,13 @@ const Navbar = () => {
           {user ? (
             <>
               <div className="hidden md:flex items-center gap-2">
-                <Button variant="outline" size="icon" className="rounded-full" asChild>
+                <Button variant="outline" size="icon" className="rounded-full bg-[#bffff5] text-[#006a5a] border-[#80ffeb] hover:bg-[#80ffeb]" asChild>
                   <Link to="/dashboard/notifications">
                     <Bell className="h-5 w-5" />
                     <span className="sr-only">{t('notifications')}</span>
                   </Link>
                 </Button>
-                <Button variant="outline" size="icon" className="rounded-full" asChild>
+                <Button variant="outline" size="icon" className="rounded-full bg-[#bffff5] text-[#006a5a] border-[#80ffeb] hover:bg-[#80ffeb]" asChild>
                   <Link to="/dashboard/messages">
                     <MessageCircle className="h-5 w-5" />
                     <span className="sr-only">{t('messages')}</span>
@@ -55,7 +55,7 @@ const Navbar = () => {
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
+                    <Button variant="outline" size="icon" className="rounded-full bg-[#bffff5] text-[#006a5a] border-[#80ffeb] hover:bg-[#80ffeb]">
                       <User className="h-5 w-5" />
                       <span className="sr-only">Profile</span>
                     </Button>
@@ -81,7 +81,7 @@ const Navbar = () => {
                 </DropdownMenu>
               </div>
               
-              <Button className="bg-gradient-to-r from-flipssi-green to-green-500 text-white hover:from-green-500 hover:to-green-600 font-bold shadow-md" asChild>
+              <Button className="bg-[#006a5a] hover:bg-[#80ffeb] hover:text-[#006a5a] text-white font-bold shadow-md" asChild>
                 <Link to="/create-listing">
                   <Plus className="mr-2 h-4 w-4" />
                   {t('post_for_free')}
@@ -90,17 +90,17 @@ const Navbar = () => {
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="outline" asChild>
+              <Button variant="outline" className="bg-[#bffff5] text-[#006a5a] border-[#80ffeb] hover:bg-[#80ffeb]" asChild>
                 <Link to="/signin">{t('sign_in')}</Link>
               </Button>
-              <Button className="bg-flipssi-purple text-white hover:bg-purple-700" asChild>
+              <Button className="bg-[#006a5a] text-white hover:bg-[#80ffeb] hover:text-[#006a5a]" asChild>
                 <Link to="/signup">{t('sign_up')}</Link>
               </Button>
-              <Button className="bg-gradient-to-r from-flipssi-green to-green-500 text-white hover:from-green-500 hover:to-green-600 font-bold shadow-md relative" asChild>
+              <Button className="bg-[#006a5a] text-white hover:bg-[#80ffeb] hover:text-[#006a5a] font-bold shadow-md relative" asChild>
                 <Link to="/create-listing">
                   <Plus className="mr-2 h-4 w-4" />
                   {t('post_for_free')}
-                  <span className="absolute -top-2 -right-2 bg-flipssi-purple text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                  <span className="absolute -top-2 -right-2 bg-[#80ffeb] text-[#006a5a] text-xs font-bold px-2 py-1 rounded-full animate-pulse">
                     FREE
                   </span>
                 </Link>
@@ -108,7 +108,7 @@ const Navbar = () => {
             </div>
           )}
           
-          <Button variant="outline" size="icon" className="md:hidden">
+          <Button variant="outline" size="icon" className="md:hidden bg-[#bffff5] text-[#006a5a] border-[#80ffeb] hover:bg-[#80ffeb]">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle menu</span>
           </Button>

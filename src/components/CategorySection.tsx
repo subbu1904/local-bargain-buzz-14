@@ -29,7 +29,7 @@ const Category = ({
           <div className={`w-16 h-16 ${color} rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
             {icon}
           </div>
-          <span className="text-sm font-medium">{name}</span>
+          <span className="text-sm font-medium text-[#006a5a]">{name}</span>
         </div>
       </Link>
     </div>
@@ -46,8 +46,8 @@ const CategorySection = () => {
   return (
     <section className="py-12 bg-gray-50">
       <div className="container px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-bold mb-8 text-center">Browse Categories</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-2">
+        <h2 className="text-2xl font-bold mb-8 text-center text-[#006a5a]">Browse Categories</h2>
+        <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-5 gap-4">
           {categories.map((category) => (
             <Collapsible key={category.id} open={expandedCategory === category.id}>
               <Category
@@ -57,14 +57,14 @@ const CategorySection = () => {
                 color={category.color}
                 onClick={() => handleCategoryClick(category.id)}
               />
-              <CollapsibleContent className="col-span-3 md:col-span-6 lg:col-span-9 bg-white rounded-md shadow-sm p-4 mt-2">
-                <h3 className="font-semibold text-lg mb-3">{category.name} Subcategories</h3>
+              <CollapsibleContent className="col-span-3 md:col-span-6 lg:col-span-5 bg-white rounded-md shadow-sm p-4 mt-2">
+                <h3 className="font-semibold text-lg mb-3 text-[#006a5a]">{category.name} Subcategories</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
                   {category.subcategories.map((subcategory) => (
                     <Link 
                       key={subcategory.id} 
                       to={`/category/${category.slug}/${subcategory.slug}`}
-                      className="p-2 hover:bg-gray-100 rounded-md transition-colors"
+                      className="p-2 hover:bg-[#bffff5] rounded-md transition-colors text-[#006a5a]"
                     >
                       <span className="text-sm">{subcategory.name}</span>
                     </Link>
