@@ -4,6 +4,7 @@ import { Mic, MicOff, Loader } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getSpeechLanguage } from '@/utils/speechUtils';
 
 interface VoiceSearchProps {
   onResult: (text: string) => void;
@@ -16,35 +17,22 @@ const VoiceSearch = ({ onResult }: VoiceSearchProps) => {
   const { toast } = useToast();
   const { t, currentLanguage } = useLanguage();
 
-  // Map language codes to SpeechRecognition language codes
-  const getSpeechRecognitionLanguage = (langCode: string) => {
-    const langMap: Record<string, string> = {
-      'en': 'en-US',
-      'hi': 'hi-IN',
-      'ta': 'ta-IN',
-      'te': 'te-IN',
-      'bn': 'bn-IN',
-      'kn': 'kn-IN'
-    };
-    return langMap[langCode] || 'en-US';
-  };
-
   useEffect(() => {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognitionInstance = new SpeechRecognition();
+      const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const recognitionInstance = new SpeechRecognitionAPI();
       
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = false;
-      recognitionInstance.lang = getSpeechRecognitionLanguage(currentLanguage);
+      recognitionInstance.lang = getSpeechLanguage(currentLanguage);
       
-      recognitionInstance.onresult = (event) => {
+      recognitionInstance.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript;
         onResult(transcript);
         setIsListening(false);
       };
       
-      recognitionInstance.onerror = (event) => {
+      recognitionInstance.onerror = (event: any) => {
         console.error('Speech recognition error', event.error);
         toast({
           title: 'Error',
@@ -78,7 +66,7 @@ const VoiceSearch = ({ onResult }: VoiceSearchProps) => {
         }
       }
     };
-  }, [currentLanguage]);
+  }, [currentLanguage, onResult, toast, t]);
 
   const toggleListening = () => {
     if (!isSupported || !recognition) return;
@@ -88,7 +76,7 @@ const VoiceSearch = ({ onResult }: VoiceSearchProps) => {
       setIsListening(false);
     } else {
       try {
-        recognition.lang = getSpeechRecognitionLanguage(currentLanguage);
+        recognition.lang = getSpeechLanguage(currentLanguage);
         recognition.start();
         setIsListening(true);
         toast({

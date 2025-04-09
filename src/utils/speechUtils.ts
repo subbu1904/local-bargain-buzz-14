@@ -1,18 +1,10 @@
 
-// Define speech recognition types for browsers
-declare global {
-  interface Window {
-    SpeechRecognition: typeof SpeechRecognition;
-    webkitSpeechRecognition: typeof SpeechRecognition;
-  }
-}
-
 // Get browser speech recognition instance
 export const getSpeechRecognition = (): SpeechRecognition | null => {
   if ('SpeechRecognition' in window) {
-    return new window.SpeechRecognition();
+    return new (window as any).SpeechRecognition();
   } else if ('webkitSpeechRecognition' in window) {
-    return new window.webkitSpeechRecognition();
+    return new (window as any).webkitSpeechRecognition();
   }
   return null;
 };

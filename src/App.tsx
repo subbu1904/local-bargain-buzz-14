@@ -61,7 +61,9 @@ function App() {
       }
     };
     
-    registerSW();
+    if ('serviceWorker' in navigator) {
+      registerSW();
+    }
   }, []);
 
   const handleReload = () => {
