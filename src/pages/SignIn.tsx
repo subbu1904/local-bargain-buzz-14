@@ -61,7 +61,7 @@ const SignIn = () => {
       <Navbar />
       <div className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
-          <div className="text-center">
+          <div className="text-left">
             <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
               Sign in to your account
             </h2>
@@ -84,7 +84,7 @@ const SignIn = () => {
           
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
-              <div>
+              <div className="text-left">
                 <Label htmlFor="email">Email address</Label>
                 <Input
                   id="email"
@@ -96,7 +96,7 @@ const SignIn = () => {
                 />
               </div>
               
-              <div>
+              <div className="text-left">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
                   <Link
@@ -125,7 +125,7 @@ const SignIn = () => {
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
             
-            <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+            <div className="bg-gray-50 p-4 rounded-md border border-gray-200 text-left">
               <h3 className="text-sm font-medium text-gray-700 mb-2">Demo Accounts:</h3>
               <div className="grid grid-cols-2 gap-2">
                 <Button 
