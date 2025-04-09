@@ -1,18 +1,47 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import VoiceSearch from "./VoiceSearch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categories, Category, Subcategory } from "@/data/categoryData";
 
 const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const { t } = useLanguage();
+
+  // Update subcategories when category changes
+  useEffect(() => {
+    if (selectedCategory) {
+      const category = categories.find(cat => cat.id === selectedCategory);
+      if (category) {
+        setSubcategories(category.subcategories);
+        setSelectedSubcategory(""); // Reset subcategory when category changes
+      }
+    } else {
+      setSubcategories([]);
+      setSelectedSubcategory("");
+    }
+  }, [selectedCategory]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Searching for:", searchQuery);
+    console.log("Searching for:", {
+      query: searchQuery,
+      category: selectedCategory,
+      subcategory: selectedSubcategory
+    });
     // In a real app, this would navigate to search results
   };
 
@@ -20,6 +49,14 @@ const HeroSection = () => {
     setSearchQuery(text);
     // Optionally auto-submit the search
     console.log("Voice search for:", text);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value);
+  };
+
+  const handleSubcategoryChange = (value: string) => {
+    setSelectedSubcategory(value);
   };
 
   return (
@@ -36,23 +73,58 @@ const HeroSection = () => {
           </p>
           
           <form onSubmit={handleSearch} className="relative max-w-xl mx-auto">
-            <div className="flex items-center">
-              <div className="relative flex-grow">
-                <Input
-                  type="text"
-                  placeholder={t('search_placeholder')}
-                  className="pl-10 h-12 text-black rounded-full border-none shadow-lg pr-12"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  <VoiceSearch onResult={handleVoiceSearchResult} />
+            <div className="flex flex-col md:flex-row gap-2">
+              <div className="flex md:w-3/4">
+                <Select value={selectedCategory} onValueChange={handleCategoryChange}>
+                  <SelectTrigger className="w-[140px] rounded-l-full bg-white border-none">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="">All Categories</SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select 
+                  value={selectedSubcategory} 
+                  onValueChange={handleSubcategoryChange}
+                  disabled={!selectedCategory || subcategories.length === 0}
+                >
+                  <SelectTrigger className="w-[140px] rounded-none border-l border-r border-gray-200 bg-white border-y-0">
+                    <SelectValue placeholder="Subcategory" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="">All Subcategories</SelectItem>
+                    {subcategories.map((subcategory) => (
+                      <SelectItem key={subcategory.id} value={subcategory.id}>
+                        {subcategory.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <div className="relative flex-grow">
+                  <Input
+                    type="text"
+                    placeholder={t('search_placeholder')}
+                    className="pl-10 h-12 text-black rounded-r-full border-none shadow-lg"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <VoiceSearch onResult={handleVoiceSearchResult} />
+                  </div>
                 </div>
               </div>
+              
               <Button 
                 type="submit" 
-                className="ml-2 h-12 rounded-full bg-[#006a5a] hover:bg-[#80ffeb] hover:text-[#006a5a]"
+                className="h-12 rounded-full bg-[#006a5a] hover:bg-[#80ffeb] hover:text-[#006a5a]"
               >
                 {t('search')}
                 <ArrowRight className="ml-2 h-4 w-4" />
