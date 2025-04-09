@@ -22,7 +22,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center">
             <span className="text-xl font-bold bg-gradient-to-r from-[#006a5a] to-[#80ffeb] bg-clip-text text-transparent">
-              flipssi.com
+              KapdaKaregar
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">

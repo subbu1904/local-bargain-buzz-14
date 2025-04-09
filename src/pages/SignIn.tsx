@@ -3,57 +3,45 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Facebook, Github, Mail } from "lucide-react";
+import { Google, Phone } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { signIn, signInWithProvider } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { signInWithProvider } = useAuth();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [whatsappDialogOpen, setWhatsappDialogOpen] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-    
+  const handleGoogleSignIn = async () => {
     try {
-      await signIn(email, password);
-      // Check if the user is admin and redirect accordingly
-      if (email === "admin@flipssi.com") {
-        navigate("/admin");
-      } else {
-        navigate("/dashboard");
-      }
+      setIsLoading(true);
+      setError("");
+      await signInWithProvider("google");
+      navigate("/dashboard");
     } catch (error: any) {
-      setError(error.message || "Failed to sign in.");
+      setError(error.message || "Failed to sign in with Google.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleProviderSignIn = async (provider: 'google' | 'facebook' | 'twitter') => {
-    try {
-      await signInWithProvider(provider);
-    } catch (error) {
-      console.error("Social sign-in error:", error);
-    }
+  const handleWhatsappDialogOpen = () => {
+    setWhatsappDialogOpen(true);
   };
 
   const fillDemoCredentials = (type: 'user' | 'admin') => {
-    if (type === 'user') {
-      setEmail("demo@flipssi.com");
-      setPassword("demo123");
-    } else {
-      setEmail("admin@flipssi.com");
-      setPassword("admin123");
-    }
+    console.log(`Demo ${type} credentials would normally be filled here`);
+    // This functionality is now obsolete with Google-only auth
   };
 
   return (
@@ -69,7 +57,7 @@ const SignIn = () => {
               Or{" "}
               <Link
                 to="/signup"
-                className="font-medium text-flipssi-purple hover:text-purple-500"
+                className="font-medium text-[#006a5a] hover:text-[#80ffeb]"
               >
                 create a new account
               </Link>
@@ -82,112 +70,61 @@ const SignIn = () => {
             </Alert>
           )}
           
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="mt-8 space-y-6">
             <div className="space-y-4">
-              <div className="text-left">
-                <Label className="text-left">Email address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="Enter your email"
-                />
-              </div>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full flex justify-center items-center gap-2 py-6"
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
+              >
+                <Google className="h-5 w-5" />
+                <span>{isLoading ? "Signing in..." : "Sign in with Google"}</span>
+              </Button>
               
-              <div className="text-left">
-                <div className="flex items-center justify-between">
-                  <Label className="text-left">Password</Label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm font-medium text-flipssi-purple hover:text-purple-500"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="Enter your password"
-                />
-              </div>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full flex justify-center items-center gap-2 py-6 opacity-70"
+                onClick={handleWhatsappDialogOpen}
+              >
+                <Phone className="h-5 w-5" />
+                <span>Sign in with WhatsApp</span>
+                <span className="ml-2 text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full">Coming Soon</span>
+              </Button>
             </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-flipssi-purple hover:bg-purple-700"
-              disabled={isLoading}
-            >
-              {isLoading ? "Signing in..." : "Sign in"}
-            </Button>
             
             <div className="bg-gray-50 p-4 rounded-md border border-gray-200 text-left">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Demo Accounts:</h3>
-              <div className="grid grid-cols-2 gap-2">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => fillDemoCredentials('user')}
-                  className="text-xs"
-                >
-                  Use Demo User
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => fillDemoCredentials('admin')}
-                  className="text-xs"
-                >
-                  Use Demo Admin
-                </Button>
-              </div>
+              <h3 className="text-sm font-medium text-gray-700 mb-2">Note:</h3>
               <div className="mt-2 text-xs text-gray-500">
-                <div><span className="font-semibold">Regular User:</span> demo@flipssi.com / demo123</div>
-                <div><span className="font-semibold">Admin:</span> admin@flipssi.com / admin123</div>
+                <p>We've switched to Google authentication for enhanced security and convenience.</p>
+                <p>WhatsApp login will be available soon!</p>
               </div>
             </div>
-            
-            <div className="relative mt-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => handleProviderSignIn("google")}
-              >
-                <Mail className="h-5 w-5" />
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => handleProviderSignIn("facebook")}
-              >
-                <Facebook className="h-5 w-5" />
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => handleProviderSignIn("twitter")}
-              >
-                <Github className="h-5 w-5" />
-              </Button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
+      
+      <Dialog open={whatsappDialogOpen} onOpenChange={setWhatsappDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>WhatsApp Login Coming Soon</DialogTitle>
+            <DialogDescription>
+              We're working on implementing WhatsApp login functionality. This feature will be available in the near future. Please use Google login for now.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end">
+            <Button 
+              onClick={() => setWhatsappDialogOpen(false)}
+              className="bg-[#006a5a] hover:bg-[#80ffeb] hover:text-[#006a5a]"
+            >
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
       <Footer />
     </div>
   );

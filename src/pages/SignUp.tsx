@@ -3,42 +3,39 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Facebook, Github, Mail } from "lucide-react";
+import { Google, Phone } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { signUp, signInWithProvider } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { signInWithProvider } = useAuth();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [whatsappDialogOpen, setWhatsappDialogOpen] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-    
+  const handleGoogleSignIn = async () => {
     try {
-      await signUp(email, password);
-      navigate("/");
+      setIsLoading(true);
+      setError("");
+      await signInWithProvider("google");
     } catch (error: any) {
-      setError(error.message || "Failed to sign up.");
+      setError(error.message || "Failed to sign in with Google.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleProviderSignIn = async (provider: 'google' | 'facebook' | 'twitter') => {
-    try {
-      await signInWithProvider(provider);
-    } catch (error) {
-      console.error("Social sign-in error:", error);
-    }
+  const handleWhatsappDialogOpen = () => {
+    setWhatsappDialogOpen(true);
   };
 
   return (
@@ -54,7 +51,7 @@ const SignUp = () => {
               Already have an account?{" "}
               <Link
                 to="/signin"
-                className="font-medium text-flipssi-purple hover:text-purple-500"
+                className="font-medium text-[#006a5a] hover:text-[#80ffeb]"
               >
                 Sign in
               </Link>
@@ -67,79 +64,53 @@ const SignUp = () => {
             </Alert>
           )}
           
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="mt-8 space-y-6">
             <div className="space-y-4">
-              <div>
-                <Label htmlFor="email">Email address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="Enter your email"
-                />
-              </div>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full flex justify-center items-center gap-2 py-6"
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
+              >
+                <Google className="h-5 w-5" />
+                <span>Sign up with Google</span>
+              </Button>
               
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="Create a password"
-                />
-                <p className="mt-1 text-xs text-gray-500">
-                  Password must be at least 6 characters long
-                </p>
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-flipssi-purple hover:bg-purple-700"
-              disabled={isLoading}
-            >
-              {isLoading ? "Creating account..." : "Sign up"}
-            </Button>
-            
-            <div className="relative mt-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-3">
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => handleProviderSignIn("google")}
+                className="w-full flex justify-center items-center gap-2 py-6 opacity-70"
+                onClick={handleWhatsappDialogOpen}
               >
-                <Mail className="h-5 w-5" />
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => handleProviderSignIn("facebook")}
-              >
-                <Facebook className="h-5 w-5" />
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => handleProviderSignIn("twitter")}
-              >
-                <Github className="h-5 w-5" />
+                <Phone className="h-5 w-5" />
+                <span>Sign up with WhatsApp</span>
+                <span className="ml-2 text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full">Coming Soon</span>
               </Button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
+      
+      <Dialog open={whatsappDialogOpen} onOpenChange={setWhatsappDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>WhatsApp Login Coming Soon</DialogTitle>
+            <DialogDescription>
+              We're working on implementing WhatsApp login functionality. This feature will be available in the near future. Please use Google login for now.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end">
+            <Button 
+              onClick={() => setWhatsappDialogOpen(false)}
+              className="bg-[#006a5a] hover:bg-[#80ffeb] hover:text-[#006a5a]"
+            >
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
       <Footer />
     </div>
   );

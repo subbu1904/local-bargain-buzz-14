@@ -10,27 +10,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { user, session, isSessionLoading } = useAuthSession();
   const { 
     isAuthLoading,
-    signUp,
-    signIn,
     signInWithProvider,
     signOut,
-    forgotPassword,
-    resetPassword
   } = useAuthOperations();
   
   // Combine loading states
   const isLoading = isSessionLoading || isAuthLoading;
 
+  // Create dummy functions for removed methods
+  const dummyFunction = async () => {
+    throw new Error('This authentication method is not supported. Please use Google authentication.');
+  };
+
   const value: AuthContextType = {
     user,
     session,
     isLoading,
-    signUp,
-    signIn,
+    signUp: dummyFunction,
+    signIn: dummyFunction,
     signInWithProvider,
     signOut,
-    forgotPassword,
-    resetPassword,
+    forgotPassword: dummyFunction,
+    resetPassword: dummyFunction,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

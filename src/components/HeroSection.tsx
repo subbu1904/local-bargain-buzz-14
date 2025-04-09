@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ArrowRight, ChevronDown } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import VoiceSearch from "./VoiceSearch";
 import {
@@ -65,7 +65,7 @@ const HeroSection = () => {
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#bffff5]">
-              flipssi.com!
+              KapdaKaregar
             </span>
           </h1>
           <p className="text-lg md:text-xl mb-8 opacity-90">
@@ -74,10 +74,10 @@ const HeroSection = () => {
           
           <form onSubmit={handleSearch} className="relative max-w-xl mx-auto">
             <div className="flex flex-col md:flex-row gap-2">
-              <div className="flex flex-1 md:w-3/4">
-                <div className="flex-grow flex">
+              <div className="flex-1 flex">
+                <div className="flex-grow flex flex-wrap md:flex-nowrap">
                   <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-                    <SelectTrigger className="w-[120px] rounded-l-full bg-white border-none text-black">
+                    <SelectTrigger className="w-full md:w-[120px] rounded-t-lg md:rounded-t-none md:rounded-l-lg bg-white border-none text-black">
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
@@ -95,7 +95,7 @@ const HeroSection = () => {
                     onValueChange={handleSubcategoryChange}
                     disabled={!selectedCategory || subcategories.length === 0}
                   >
-                    <SelectTrigger className="w-[120px] border-l border-r border-gray-200 bg-white border-y-0 text-black">
+                    <SelectTrigger className="w-full md:w-[120px] border-t-0 md:border-t md:border-l-0 md:border-r-0 border-gray-200 bg-white text-black">
                       <SelectValue placeholder="Subcategory" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
@@ -108,11 +108,11 @@ const HeroSection = () => {
                     </SelectContent>
                   </Select>
 
-                  <div className="relative flex-grow">
+                  <div className="relative flex-grow w-full">
                     <Input
                       type="text"
                       placeholder={t('search_placeholder')}
-                      className="pl-10 h-12 text-black rounded-r-full border-none shadow-lg"
+                      className="pl-10 h-12 text-black rounded-b-lg md:rounded-b-none md:rounded-r-lg border-t-0 md:border-t md:border-l-0 shadow-lg"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -153,7 +153,7 @@ const HeroSection = () => {
           </div>
           
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button className="w-full sm:w-auto bg-[#F97316] text-white hover:bg-[#FB923C] hover:text-white shadow-lg" asChild>
+            <Button className="w-full sm:w-auto bg-[#80ffeb] text-[#006a5a] hover:bg-[#bffff5] shadow-lg" asChild>
               <a href="#browse">
                 {t('browse')}
                 <ArrowRight className="ml-2 h-4 w-4" />
