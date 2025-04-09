@@ -22,6 +22,9 @@ const LanguageSelector = () => {
   const [open, setOpen] = useState(false);
   const popoverTriggerRef = useRef<HTMLButtonElement>(null);
 
+  // Make sure availableLanguages is always an array even if it's undefined
+  const languages = Array.isArray(availableLanguages) ? availableLanguages : [];
+
   const handleSelect = (value: string) => {
     setLanguage(value);
     setOpen(false);
@@ -45,7 +48,7 @@ const LanguageSelector = () => {
           <Globe className="h-4 w-4" />
           <span className="hidden md:inline">{t('language')}</span>
           <span className="font-medium">
-            {availableLanguages.find(lang => lang.code === currentLanguage)?.nativeName || 'English'}
+            {languages.find(lang => lang.code === currentLanguage)?.nativeName || 'English'}
           </span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -55,7 +58,7 @@ const LanguageSelector = () => {
           <CommandInput placeholder={t('select_language')} />
           <CommandEmpty>No language found.</CommandEmpty>
           <CommandGroup>
-            {availableLanguages.map((language) => (
+            {languages.map((language) => (
               <CommandItem
                 key={language.code}
                 value={language.code}
