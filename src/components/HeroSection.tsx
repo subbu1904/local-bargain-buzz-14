@@ -74,50 +74,52 @@ const HeroSection = () => {
           
           <form onSubmit={handleSearch} className="relative max-w-xl mx-auto">
             <div className="flex flex-col md:flex-row gap-2">
-              <div className="flex md:w-3/4">
-                <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-                  <SelectTrigger className="w-[140px] rounded-l-full bg-white border-none">
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="all_categories">All Categories</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div className="flex flex-1 md:w-3/4">
+                <div className="flex-grow flex">
+                  <Select value={selectedCategory} onValueChange={handleCategoryChange}>
+                    <SelectTrigger className="w-[120px] rounded-l-full bg-white border-none text-black">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      <SelectItem value="all_categories">All Categories</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                <Select 
-                  value={selectedSubcategory} 
-                  onValueChange={handleSubcategoryChange}
-                  disabled={!selectedCategory || subcategories.length === 0}
-                >
-                  <SelectTrigger className="w-[140px] rounded-none border-l border-r border-gray-200 bg-white border-y-0">
-                    <SelectValue placeholder="Subcategory" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="all_subcategories">All Subcategories</SelectItem>
-                    {subcategories.map((subcategory) => (
-                      <SelectItem key={subcategory.id} value={subcategory.id}>
-                        {subcategory.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <Select 
+                    value={selectedSubcategory} 
+                    onValueChange={handleSubcategoryChange}
+                    disabled={!selectedCategory || subcategories.length === 0}
+                  >
+                    <SelectTrigger className="w-[120px] border-l border-r border-gray-200 bg-white border-y-0 text-black">
+                      <SelectValue placeholder="Subcategory" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      <SelectItem value="all_subcategories">All Subcategories</SelectItem>
+                      {subcategories.map((subcategory) => (
+                        <SelectItem key={subcategory.id} value={subcategory.id}>
+                          {subcategory.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                <div className="relative flex-grow">
-                  <Input
-                    type="text"
-                    placeholder={t('search_placeholder')}
-                    className="pl-10 h-12 text-black rounded-r-full border-none shadow-lg"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <VoiceSearch onResult={handleVoiceSearchResult} />
+                  <div className="relative flex-grow">
+                    <Input
+                      type="text"
+                      placeholder={t('search_placeholder')}
+                      className="pl-10 h-12 text-black rounded-r-full border-none shadow-lg"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      <VoiceSearch onResult={handleVoiceSearchResult} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -134,24 +136,24 @@ const HeroSection = () => {
           
           <div className="flex flex-wrap justify-center gap-2 mt-6">
             <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
-              {t('electronics')}
+              {t('tailor')}
             </Button>
             <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
-              {t('furniture')}
+              {t('unit-owner')}
             </Button>
             <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
-              {t('vehicles')}
+              {t('master')}
             </Button>
             <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
-              {t('clothing')}
+              {t('boutique')}
             </Button>
             <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
-              {t('home')}
+              {t('press')}
             </Button>
           </div>
           
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button className="w-full sm:w-auto bg-[#006a5a] text-white hover:bg-[#80ffeb] hover:text-[#006a5a] shadow-lg" asChild>
+            <Button className="w-full sm:w-auto bg-[#F97316] text-white hover:bg-[#FB923C] hover:text-white shadow-lg" asChild>
               <a href="#browse">
                 {t('browse')}
                 <ArrowRight className="ml-2 h-4 w-4" />
