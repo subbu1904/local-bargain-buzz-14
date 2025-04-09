@@ -100,7 +100,7 @@ const VoiceSearch = ({ onResult }: VoiceSearchProps) => {
       size="icon"
       onClick={toggleListening}
       disabled={!isSupported}
-      className={`rounded-full transition-all ${isListening ? 'bg-red-100 text-red-500 animate-pulse' : 'text-gray-700'}`}
+      className={`rounded-full transition-all ${isListening ? 'bg-red-100 text-red-500 animate-pulse' : 'bg-gray-200 text-gray-700'}`}
       aria-label={t('voice_search')}
       title={t('voice_search')}
     >

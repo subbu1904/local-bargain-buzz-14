@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <div className="block">
+          <div className="hidden sm:block">
             <LanguageSelector />
           </div>
           
