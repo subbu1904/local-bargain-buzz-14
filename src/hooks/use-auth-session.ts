@@ -1,64 +1,53 @@
 
 import { useState, useEffect } from 'react';
-import { Session, User } from '@supabase/supabase-js';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
+import type { User, Session } from '@supabase/supabase-js';
 
-export const useAuthSession = () => {
+interface UseAuthSessionReturn {
+  user: User | null;
+  session: Session | null;
+  isSessionLoading: boolean;
+}
+
+export const useAuthSession = (): UseAuthSessionReturn => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isSessionLoading, setIsSessionLoading] = useState(true);
 
   useEffect(() => {
-    const setData = async () => {
-      if (!isSupabaseConfigured()) {
-        console.warn('Supabase is not configured. Authentication features will not work.');
-        setIsLoading(false);
-        return;
-      }
-
+    const getSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) {
-          console.error(error);
-        }
+        setIsSessionLoading(true);
+        const { data, error } = await supabase.auth.getSession();
         
-        setSession(session);
-        setUser(session?.user ?? null);
+        if (error) {
+          console.error('Error getting session:', error);
+        } else if (data?.session) {
+          setSession(data.session);
+          setUser(data.session.user);
+        }
       } catch (error) {
-        console.error('Error fetching auth session:', error);
+        console.error('Unexpected error getting session:', error);
       } finally {
-        setIsLoading(false);
+        setIsSessionLoading(false);
       }
     };
 
-    let subscription: { unsubscribe: () => void } | null = null;
-    
-    if (isSupabaseConfigured()) {
-      try {
-        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-          setSession(session);
-          setUser(session?.user ?? null);
-          setIsLoading(false);
-        });
-        subscription = data.subscription;
-      } catch (error) {
-        console.error('Error setting up auth state change listener:', error);
-        setIsLoading(false);
-      }
-    }
+    getSession();
 
-    setData();
+    // Listen for auth changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, newSession) => {
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+        setIsSessionLoading(false);
+      }
+    );
 
     return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      authListener?.subscription.unsubscribe();
     };
   }, []);
 
-  return {
-    user,
-    session,
-    isSessionLoading: isLoading
-  };
+  return { user, session, isSessionLoading };
 };
