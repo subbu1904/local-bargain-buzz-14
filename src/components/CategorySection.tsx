@@ -44,14 +44,14 @@ const CategorySection = () => {
   };
 
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-12 bg-gray-50" id="browse">
       <div className="container px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold mb-8 text-center text-[#006a5a]">Browse Categories</h2>
         <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-5 gap-4">
           {categories.map((category) => (
             <Collapsible key={category.id} open={expandedCategory === category.id}>
               <Category
-                icon={<category.icon size={28} />}
+                icon={<category.icon size={28} className="text-[#006a5a]" />}
                 name={category.name}
                 link={`/category/${category.slug}`}
                 color={category.color}

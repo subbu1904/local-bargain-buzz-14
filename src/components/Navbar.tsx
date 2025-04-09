@@ -26,15 +26,15 @@ const Navbar = () => {
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-            <Link to="/" className="transition-colors hover:text-gray-900">{t('home')}</Link>
-            <Link to="/browse" className="transition-colors hover:text-gray-900">{t('browse')}</Link>
-            <Link to="/categories" className="transition-colors hover:text-gray-900">{t('categories')}</Link>
-            <Link to="/about" className="transition-colors hover:text-gray-900">{t('about')}</Link>
+            <Link to="/" className="transition-colors hover:text-[#006a5a]">{t('home')}</Link>
+            <Link to="/browse" className="transition-colors hover:text-[#006a5a]">{t('browse')}</Link>
+            <Link to="/categories" className="transition-colors hover:text-[#006a5a]">{t('categories')}</Link>
+            <Link to="/about" className="transition-colors hover:text-[#006a5a]">{t('about')}</Link>
           </div>
         </div>
         
         <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
+          <div className="block">
             <LanguageSelector />
           </div>
           

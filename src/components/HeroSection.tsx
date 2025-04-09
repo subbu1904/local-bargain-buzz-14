@@ -23,11 +23,11 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="bg-[#006A4E] text-white py-20 md:py-28">
+    <div className="bg-[#006a5a] text-white py-20 md:py-28">
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#bffff5]">
               flipssi.com!
             </span>
           </h1>
@@ -52,7 +52,7 @@ const HeroSection = () => {
               </div>
               <Button 
                 type="submit" 
-                className="ml-2 h-12 rounded-full bg-gradient-to-r from-flipssi-purple to-purple-500 hover:from-purple-600 hover:to-purple-700"
+                className="ml-2 h-12 rounded-full bg-[#006a5a] hover:bg-[#80ffeb] hover:text-[#006a5a]"
               >
                 {t('search')}
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -61,31 +61,31 @@ const HeroSection = () => {
           </form>
           
           <div className="flex flex-wrap justify-center gap-2 mt-6">
-            <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
+            <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
               {t('electronics')}
             </Button>
-            <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
+            <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
               {t('furniture')}
             </Button>
-            <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
+            <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
               {t('vehicles')}
             </Button>
-            <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
+            <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
               {t('clothing')}
             </Button>
-            <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none">
+            <Button variant="secondary" className="bg-[#bffff5] hover:bg-[#80ffeb] text-[#006a5a] border-none">
               {t('home')}
             </Button>
           </div>
           
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button className="w-full sm:w-auto bg-flipssi-green text-white hover:bg-green-500 shadow-lg" asChild>
+            <Button className="w-full sm:w-auto bg-[#006a5a] text-white hover:bg-[#80ffeb] hover:text-[#006a5a] shadow-lg" asChild>
               <a href="#browse">
                 {t('browse')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </a>
             </Button>
-            <Button className="w-full sm:w-auto bg-gradient-to-r from-flipssi-purple to-purple-500 text-white hover:from-purple-600 hover:to-purple-700 shadow-lg" asChild>
+            <Button className="w-full sm:w-auto bg-[#bffff5] text-[#006a5a] hover:bg-[#80ffeb] shadow-lg" asChild>
               <a href="#subscription">
                 {t('post_for_free')}
                 <ArrowRight className="ml-2 h-4 w-4" />
