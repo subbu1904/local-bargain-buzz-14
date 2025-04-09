@@ -93,9 +93,6 @@ const Navbar = () => {
               <Button variant="outline" className="bg-[#bffff5] text-[#006a5a] border-[#80ffeb] hover:bg-[#80ffeb]" asChild>
                 <Link to="/signin">{t('sign_in')}</Link>
               </Button>
-              <Button className="bg-[#006a5a] text-white hover:bg-[#80ffeb] hover:text-[#006a5a]" asChild>
-                <Link to="/signup">{t('sign_up')}</Link>
-              </Button>
               <Button className="bg-[#006a5a] text-white hover:bg-[#80ffeb] hover:text-[#006a5a] font-bold shadow-md relative" asChild>
                 <Link to="/create-listing">
                   <Plus className="mr-2 h-4 w-4" />

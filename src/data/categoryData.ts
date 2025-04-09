@@ -25,11 +25,13 @@ export const categories: Category[] = [
     icon: Shirt,
     color: "bg-[#bffff5] text-[#006a5a]",
     subcategories: [
-      { id: "tailor-mens", name: "Men's Clothing", slug: "mens-clothing" },
-      { id: "tailor-womens", name: "Women's Clothing", slug: "womens-clothing" },
-      { id: "tailor-kids", name: "Kids' Clothing", slug: "kids-clothing" },
-      { id: "tailor-uniform", name: "Uniforms", slug: "uniforms" },
-      { id: "tailor-custom", name: "Custom Orders", slug: "custom-orders" },
+      { id: "tailor-kurti", name: "Kurti", slug: "kurti" },
+      { id: "tailor-shirt", name: "Shirt", slug: "shirt" },
+      { id: "tailor-pant", name: "Pant", slug: "pant" },
+      { id: "tailor-ladies", name: "Ladies", slug: "ladies" },
+      { id: "tailor-embroid", name: "Embroid", slug: "embroid" },
+      { id: "tailor-all", name: "All", slug: "all" },
+      { id: "tailor-others", name: "Others", slug: "others" },
     ]
   },
   {
@@ -39,11 +41,13 @@ export const categories: Category[] = [
     icon: Home,
     color: "bg-[#80ffeb] text-[#006a5a]",
     subcategories: [
-      { id: "unit-production", name: "Production Units", slug: "production-units" },
-      { id: "unit-factory", name: "Factory Units", slug: "factory-units" },
-      { id: "unit-workshop", name: "Workshops", slug: "workshops" },
-      { id: "unit-rental", name: "Rental Units", slug: "rental-units" },
-      { id: "unit-commercial", name: "Commercial Units", slug: "commercial-units" },
+      { id: "unit-kurti", name: "Kurti", slug: "kurti" },
+      { id: "unit-shirt", name: "Shirt", slug: "shirt" },
+      { id: "unit-pant", name: "Pant", slug: "pant" },
+      { id: "unit-ladies", name: "Ladies", slug: "ladies" },
+      { id: "unit-embroid", name: "Embroid", slug: "embroid" },
+      { id: "unit-all", name: "All", slug: "all" },
+      { id: "unit-others", name: "Others", slug: "others" },
     ]
   },
   {
@@ -67,11 +71,13 @@ export const categories: Category[] = [
     icon: Tv,
     color: "bg-[#80ffeb] text-[#006a5a]",
     subcategories: [
-      { id: "master-cutting", name: "Cutting", slug: "cutting" },
-      { id: "master-pattern", name: "Pattern Making", slug: "pattern-making" },
-      { id: "master-design", name: "Design", slug: "design" },
-      { id: "master-stitching", name: "Stitching", slug: "stitching" },
-      { id: "master-embroidery", name: "Embroidery", slug: "embroidery" },
+      { id: "master-kurti", name: "Kurti", slug: "kurti" },
+      { id: "master-shirt", name: "Shirt", slug: "shirt" },
+      { id: "master-pant", name: "Pant", slug: "pant" },
+      { id: "master-ladies", name: "Ladies", slug: "ladies" },
+      { id: "master-embroid", name: "Embroid", slug: "embroid" },
+      { id: "master-all", name: "All", slug: "all" },
+      { id: "master-others", name: "Others", slug: "others" },
     ]
   },
   {
@@ -81,11 +87,13 @@ export const categories: Category[] = [
     icon: Car,
     color: "bg-[#bffff5] text-[#006a5a]",
     subcategories: [
-      { id: "job-stitching", name: "Stitching", slug: "stitching" },
-      { id: "job-embroidery", name: "Embroidery", slug: "embroidery" },
-      { id: "job-printing", name: "Printing", slug: "printing" },
-      { id: "job-finishing", name: "Finishing", slug: "finishing" },
-      { id: "job-packaging", name: "Packaging", slug: "packaging" },
+      { id: "job-kurti", name: "Kurti", slug: "kurti" },
+      { id: "job-shirt", name: "Shirt", slug: "shirt" },
+      { id: "job-pant", name: "Pant", slug: "pant" },
+      { id: "job-ladies", name: "Ladies", slug: "ladies" },
+      { id: "job-embroid", name: "Embroid", slug: "embroid" },
+      { id: "job-all", name: "All", slug: "all" },
+      { id: "job-others", name: "Others", slug: "others" },
     ]
   },
   {
@@ -109,11 +117,9 @@ export const categories: Category[] = [
     icon: Sofa,
     color: "bg-[#bffff5] text-[#006a5a]",
     subcategories: [
-      { id: "press-ironing", name: "Ironing Services", slug: "ironing-services" },
-      { id: "press-steaming", name: "Steaming", slug: "steaming" },
-      { id: "press-finishing", name: "Finishing", slug: "finishing" },
-      { id: "press-commercial", name: "Commercial Pressing", slug: "commercial-pressing" },
-      { id: "press-dry-cleaning", name: "Dry Cleaning", slug: "dry-cleaning" },
+      { id: "press-ladies", name: "Ladies", slug: "ladies" },
+      { id: "press-gents", name: "Gents", slug: "gents" },
+      { id: "press-all", name: "All", slug: "all" },
     ]
   },
   {
@@ -137,11 +143,10 @@ export const categories: Category[] = [
     icon: Bike,
     color: "bg-[#bffff5] text-[#006a5a]",
     subcategories: [
-      { id: "dyeing-fabric", name: "Fabric Dyeing", slug: "fabric-dyeing" },
-      { id: "dyeing-garment", name: "Garment Dyeing", slug: "garment-dyeing" },
-      { id: "dyeing-natural", name: "Natural Dyes", slug: "natural-dyes" },
-      { id: "dyeing-chemical", name: "Chemical Dyes", slug: "chemical-dyes" },
-      { id: "dyeing-printing", name: "Print Dyeing", slug: "print-dyeing" },
+      { id: "dyeing-fabric", name: "Fabric", slug: "fabric" },
+      { id: "dyeing-yarn", name: "Yarn", slug: "yarn" },
+      { id: "dyeing-garments", name: "Garments", slug: "garments" },
+      { id: "dyeing-all", name: "All", slug: "all" },
     ]
   },
   {
