@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Google, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
@@ -79,7 +79,7 @@ const SignIn = () => {
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
               >
-                <Google className="h-5 w-5" />
+                <Mail className="h-5 w-5" />
                 <span>{isLoading ? "Signing in..." : "Sign in with Google"}</span>
               </Button>
               
