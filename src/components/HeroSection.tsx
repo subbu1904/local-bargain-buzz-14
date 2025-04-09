@@ -80,7 +80,7 @@ const HeroSection = () => {
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
-                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="all_categories">All Categories</SelectItem>
                     {categories.map((category) => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.name}
@@ -98,7 +98,7 @@ const HeroSection = () => {
                     <SelectValue placeholder="Subcategory" />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
-                    <SelectItem value="">All Subcategories</SelectItem>
+                    <SelectItem value="all_subcategories">All Subcategories</SelectItem>
                     {subcategories.map((subcategory) => (
                       <SelectItem key={subcategory.id} value={subcategory.id}>
                         {subcategory.name}
