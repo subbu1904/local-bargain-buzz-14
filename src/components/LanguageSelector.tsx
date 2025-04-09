@@ -8,6 +8,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from '@/components/ui/command';
 import {
   Popover,
@@ -56,27 +57,29 @@ const LanguageSelector = () => {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder={t('select_language')} />
-          <CommandEmpty>No language found.</CommandEmpty>
-          <CommandGroup>
-            {languages.map((language) => (
-              <CommandItem
-                key={language.code}
-                value={language.code}
-                onSelect={() => handleSelect(language.code)}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    currentLanguage === language.code ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                <span className="mr-2">{language.nativeName}</span>
-                <span className="text-xs text-muted-foreground">
-                  {language.name !== language.nativeName ? language.name : ''}
-                </span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandList>
+            <CommandEmpty>No language found.</CommandEmpty>
+            <CommandGroup>
+              {languages.map((language) => (
+                <CommandItem
+                  key={language.code}
+                  value={language.code}
+                  onSelect={() => handleSelect(language.code)}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      currentLanguage === language.code ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  <span className="mr-2">{language.nativeName}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {language.name !== language.nativeName ? language.name : ''}
+                  </span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
